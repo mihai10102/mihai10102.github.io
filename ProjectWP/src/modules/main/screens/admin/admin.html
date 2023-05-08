@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <title>Book List</title>
@@ -25,12 +25,10 @@
         </button>
       </div>
       <div>
-        <button>
-          <a
-            href="../../../../../index.html"
-            onclick="window.localStorage.removeItem('connectedUserId')"
-            >Logout</a
-          >
+        <button
+          onclick="window.location.href='../../../../../index.html';window.localStorage.removeItem('connectedUserId')"
+        >
+          Logout
         </button>
       </div>
     </nav>
@@ -99,6 +97,6 @@
         <p>&copy; Book Shop</p>
       </footer>
     </div>
+    <script src="admin.js"></script>
   </body>
-  <script src="admin.js"></script>
 </html>
