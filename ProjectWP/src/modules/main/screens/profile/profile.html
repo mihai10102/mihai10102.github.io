@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Edit My Page</title>
+    <link rel="stylesheet" href="../../../../../app.css" />
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  </head>
+  <body class="profile">
+    <nav>
+      <div>
+        <button><a href="./../home/home.html">Home</a></button>
+      </div class="nav">
+      <div><button><a href="../orders/orders.html">Orders</a></button></div>
+    </nav>
+
+    <h1>Edit My Page</h1>
+    <form id="profile-form">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" />
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" />
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" />
+
+      <input type="button" value="Save" onclick="handleUpdateProfile()"/>
+    </form>
+    <footer>
+      <p>&copy; Book Shop</p>
+    </footer>
+  </body>
+  <script src="./profile.js"></script>
+</html>

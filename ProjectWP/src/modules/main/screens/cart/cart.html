@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Book Shopping Cart</title>
+    <link rel="stylesheet" type="text/css" href="../../../../../app.css" />
+  </head>
+  <body class="cart">
+    <nav>
+      <div>
+        <button><a href="../home/home.html">Home</a></button>
+      </div>
+    </nav>
+    <h1 class="center">Book Shopping Cart</h1>
+    <table class="cart">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <!-- <th>Total</th> -->
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Book rows will be dynamically added here -->
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="4">Total:</td>
+          <td id="total-price">0.00</td>
+        </tr>
+      </tfoot>
+    </table>
+    <button class="checkout-btn" onclick="handleCheckout()">Checkout</button>
+    <footer>
+      <p>&copy; Book Shop</p>
+    </footer>
+  </body>
+  <script src="cart.js"></script>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Book List</title>
+    <link rel="stylesheet" type="text/css" href="../../../../../app.css" />
+  </head>
+  <body class="admin">
+    <nav>
+      <div>
+        <h1>Book List</h1>
+      </div>
+      <div>
+        <button
+          type="submit"
+          class="save-changes"
+          onclick="handleSaveChanges()"
+        >
+          Save Changes
+        </button>
+      </div>
+      <div>
+        <button type="submit" class="add-book" onclick="showAddBookForm()">
+          Add Book
+        </button>
+      </div>
+      <div>
+        <button>
+          <a
+            href="../../../../../index.html"
+            onclick="window.localStorage.removeItem('connectedUserId')"
+            >Logout</a
+          >
+        </button>
+      </div>
+    </nav>
+    <main>
+      <div class="table">
+        <table id="book-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Author</th>
+              <th>Price</th>
+              <th>Description</th>
+              <th>Edit</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <form id="edit-form">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" /><br />
+
+        <label for="author">Author:</label>
+        <input type="text" id="author" name="author" /><br />
+
+        <label for="price">Price:</label>
+        <input type="number" id="price" name="price" /><br />
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description"></textarea><br />
+
+        <button type="submit">Save</button>
+        <button type="button" onclick="cancelEdit()">Cancel</button>
+      </form>
+
+      <form id="add-book-form">
+        <label for="name">Name:</label>
+        <input type="text" id="ab-name" name="name" /><br />
+
+        <label for="author">Author:</label>
+        <input type="text" id="ab-author" name="author" /><br />
+
+        <label for="price">Price:</label>
+        <input type="number" id="ab-price" name="price" /><br />
+
+        <label for="description">Description:</label>
+        <textarea id="ab-description" name="description"></textarea><br />
+
+        <button type="button" onclick="addBook()">Save</button>
+        <button type="button" onclick="cancelAddBook()">Cancel</button>
+      </form>
+
+      <div class="drag-area">
+        <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
+        <header>Drag & Drop to Upload File</header>
+        <span>OR</span>
+        <button>Browse File</button>
+        <input type="file" hidden />
+      </div>
+    </main>
+
+    <div>
+      <footer>
+        <p>&copy; Book Shop</p>
+      </footer>
+    </div>
+  </body>
+  <script src="admin.js"></script>
+</html>

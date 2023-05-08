@@ -1,0 +1,1604 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* -webkit-font-smoothing: antialiased; */
+}
+
+iframe[seamless] {
+  border: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+body {
+  background: #e1e0d7;
+  font-family: "Rubik", sans-serif;
+}
+
+.login-form {
+  background: #fff;
+  width: 500px;
+  margin: 65px auto;
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  flex-direction: column;
+  border-radius: 4px;
+  box-shadow: 0 2px 25px rgba(0, 0, 0, 0.2);
+}
+.login-form h1 {
+  padding: 35px 35px 0 35px;
+  font-weight: 300;
+}
+.login-form .content {
+  padding: 35px;
+  text-align: center;
+}
+.login-form .input-field {
+  padding: 12px 5px;
+}
+.login-form .input-field input {
+  font-size: 16px;
+  display: block;
+  font-family: "Rubik", sans-serif;
+  width: 100%;
+  padding: 10px 1px;
+  border: 0;
+  border-bottom: 1px solid #747474;
+  outline: none;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}
+.login-form .input-field input::-webkit-input-placeholder {
+  text-transform: uppercase;
+}
+.login-form .input-field input::-moz-placeholder {
+  text-transform: uppercase;
+}
+.login-form .input-field input:-ms-input-placeholder {
+  text-transform: uppercase;
+}
+.login-form .input-field input::-ms-input-placeholder {
+  text-transform: uppercase;
+}
+.login-form .input-field input::placeholder {
+  text-transform: uppercase;
+}
+.login-form .input-field input:focus {
+  border-color: #222;
+}
+.login-form a.link {
+  text-decoration: none;
+  color: #747474;
+  letter-spacing: 0.2px;
+  text-transform: uppercase;
+  display: inline-block;
+  margin-top: 20px;
+}
+.login-form .action {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  flex-direction: row;
+}
+/* .login-form .action button {
+  width: 100%;
+  border: none;
+  padding: 180px;
+  font-family: "Rubik", sans-serif;
+  cursor: pointer;
+  text-transform: uppercase;
+  background: #e8e9ec;
+  color: #777;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 0;
+  letter-spacing: 0.2px;
+  outline: 0;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+} */
+
+.login-form .action button:hover {
+  background: #d8d8d8;
+}
+.login-form .action button:nth-child(2) {
+  background: #2d3b55;
+  color: #fff;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 4px;
+}
+.login-form .action button:nth-child(2):hover {
+  background: #3c4d6d;
+}
+
+.registerButton {
+  height: 56px;
+  text-align: center;
+  width: 100%;
+  border: none;
+  padding: 18px;
+  font-family: "Rubik", sans-serif;
+  cursor: pointer;
+  text-transform: uppercase;
+  background: #e8e9ec;
+  color: #777;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 0;
+  letter-spacing: 0.2px;
+  outline: 0;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.loginButton {
+  height: 56px;
+  text-align: center;
+  width: 100%;
+  border: none;
+  padding: 18px;
+  font-family: "Rubik", sans-serif;
+  cursor: pointer;
+  text-transform: uppercase;
+  background: #2d3b55;
+  color: #777;
+  border-bottom-right-radius: 0;
+  letter-spacing: 0.2px;
+  outline: 0;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+a {
+  display: block;
+  width: 100%;
+  line-height: 4em;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+/* HOME */
+
+* .home {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+* .home {
+  margin: 0;
+  padding: 0;
+  background-color: #f2f2f2;
+}
+.home nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #333;
+  color: #fff;
+}
+.home nav button {
+  background-color: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 16px;
+  margin-right: 10px;
+}
+.home nav a {
+  color: inherit;
+  text-decoration: none;
+}
+.home button[type="submit"] {
+  background-color: #333;
+  border: none;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.home table {
+  width: 100%;
+  background-color: #fff;
+  margin: 20px 0;
+  border-collapse: collapse;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.home th {
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  text-align: left;
+}
+.home td {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+.home tr {
+  /* color: white; */
+  transition: background-color 0.2s;
+}
+.home tr:hover {
+  background-color: grey; /* set the background color on hover */
+}
+.home button[type="button"] {
+  background-color: #333;
+  border: none;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.home button[type="button"]::before {
+  content: "\1F6CD";
+  font-size: 20px;
+}
+
+.home .row {
+  display: flex;
+  flex: row;
+}
+
+/* flip-card */
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200&display=swap");
+:root .home {
+  --font-style: "Nunito Sans", sans-serif;
+}
+
+.home .cards {
+  display: flex;
+  flex: row;
+}
+
+.home .card {
+  color: white;
+  top: 50%;
+  left: 50%;
+  width: 200px;
+  height: 200px;
+  background: #ffffff;
+  box-shadow: 0px 4px 4px rgba(223, 0, 255, 0.25);
+  border-radius: 25px;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+  cursor: pointer;
+  margin: 10px;
+}
+
+.home .text_back {
+  box-sizing: border-box;
+  width: 100%;
+  height: 50%;
+  background: #131315;
+  border: 1px solid #000000;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 0px 0px 25px 25px;
+}
+
+.home h1 {
+  border-bottom: 1px solid #df00ff;
+  font-size: 12pt;
+  font-weight: 400;
+}
+
+.home .text_back div {
+  width: 85%;
+  margin: auto;
+}
+
+.home p {
+  font-size: 1vw;
+  font-weight: 400;
+}
+
+.home span {
+  color: #db9edf;
+}
+
+.home .image_container {
+  width: 100%;
+  height: 50%;
+  border-radius: 25px 25px 0px 0px;
+  background: url(../../../../assets/cimitirul_animalelor.jpeg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
+.home .cards:nth-child():hover {
+  transform: rotateY(180deg);
+}
+
+.home .card:hover {
+  transform: rotateY(180deg);
+}
+
+.home .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 25px;
+  -webkit-backface-visibility: hidden;
+  /* Safari */
+  backface-visibility: hidden;
+}
+
+.home .flip-card-back {
+  background-color: #19191a;
+  color: white;
+  transform: rotateY(180deg);
+}
+
+.home h2 {
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  text-align: center;
+  transform: translate(-50%, -50%);
+}
+
+/* SEARCH BAR */
+
+* .home {
+  background-color: #131315;
+  font-family: "Montserrat", monospace;
+  font-weight: bold;
+}
+
+.home .container {
+  width: 70%;
+  margin: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 400px;
+  transform: translate(-50%, -50%);
+}
+
+.home .results-container {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.home textarea:focus,
+.home input:focus {
+  outline: none;
+}
+
+.home nav input {
+  width: 98%;
+  background-color: #131315;
+  border: 1px solid #9985fb;
+  height: 50px;
+  width: 500px;
+  border-radius: 25px;
+  padding-left: 2%;
+  color: white;
+}
+
+.home .post {
+  display: flex;
+  flex-direction: row;
+  background-color: #282828;
+  padding: 2%;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 25px;
+}
+
+.home .post:hover {
+  box-shadow: 0px 1px 0.5px #9985fb;
+}
+
+.home .post img {
+  width: 100px;
+  height: 100px;
+}
+
+.home .post h1 {
+  font-size: 20px;
+  margin: auto;
+  margin-left: 25px;
+}
+
+/* DRAG AND DROP */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+* .admin {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+.admin .drag-area body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #322b2b;
+}
+
+.admin .drag-area {
+  border: 10px dashed #dbbdbd;
+  height: 500px;
+  width: 700px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  display: none;
+}
+
+.admin .drag-area.active {
+  border: 10px dashed #b92c2c;
+}
+
+.admin .icon {
+  font-size: 100px;
+  color: #000;
+}
+
+.admin .drag-area header {
+  font-size: 30px;
+  font-weight: 500;
+  color: #000;
+}
+
+.admin .drag-area span {
+  font-size: 25px;
+  font-weight: 500;
+  color: #fff;
+  margin: 10px 0 15px 0;
+}
+
+.admin .drag-area button {
+  padding: 10px 25px;
+  font-size: 20px;
+  font-weight: 500;
+  border: none;
+  outline: none;
+  background: #fff;
+  color: #b92c2c;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.home #show-more {
+  color: white;
+  position: fixed;
+  transform: translate(230px, 520px);
+}
+
+.home #show-more:hover {
+  cursor: pointer;
+}
+
+.home #show-less {
+  color: white;
+  position: fixed;
+  transform: translate(230px, 520px);
+}
+
+.home #show-less:hover {
+  cursor: pointer;
+}
+
+.home footer,
+.orderss footer,
+.book footer,
+.cart footer,
+.profile footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #000;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+/* PROFILE */
+
+* .profile {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+* .profile {
+  margin: 0;
+  padding: 0;
+  background-color: #f2f2f2;
+}
+.profile nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #333;
+  color: #fff;
+}
+.profile nav button {
+  background-color: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 16px;
+  margin-right: 10px;
+}
+.profile nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.profile button[type="submit"] {
+  background-color: #333;
+  border: none;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.profile table {
+  width: 100%;
+  background-color: #fff;
+  margin: 20px 0;
+  border-collapse: collapse;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.profile th {
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  text-align: left;
+}
+.profile td {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+.profile tr {
+  /* color: white; */
+  transition: background-color 0.2s;
+}
+.profile tr:hover {
+  background-color: grey; /* set the background color on hover */
+}
+.profile button[type="button"] {
+  background-color: #333;
+  border: none;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile button[type="button"]::before {
+  content: "\1F6CD";
+  font-size: 20px;
+}
+
+.profile .row {
+  display: flex;
+  flex: row;
+}
+
+/* flip-card */
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200&display=swap");
+:root .profile {
+  --font-style: "Nunito Sans", sans-serif;
+}
+
+.profile .cards {
+  display: flex;
+  flex: row;
+}
+
+.profile .card {
+  color: white;
+  top: 50%;
+  left: 50%;
+  width: 200px;
+  height: 200px;
+  background: #ffffff;
+  box-shadow: 0px 4px 4px rgba(223, 0, 255, 0.25);
+  border-radius: 25px;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+  cursor: pointer;
+  margin: 10px;
+}
+
+.profile .text_back {
+  box-sizing: border-box;
+  width: 100%;
+  height: 50%;
+  background: #131315;
+  border: 1px solid #000000;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 0px 0px 25px 25px;
+}
+
+.profile h1 {
+  border-bottom: 1px solid #df00ff;
+  font-size: 12pt;
+  font-weight: 400;
+}
+
+.profile .text_back div {
+  width: 85%;
+  margin: auto;
+}
+
+.profile p {
+  font-size: 1vw;
+  font-weight: 400;
+}
+
+.profile span {
+  color: #db9edf;
+}
+
+.profile .image_container {
+  width: 100%;
+  height: 50%;
+  border-radius: 25px 25px 0px 0px;
+  background: url(../../../../assets/cimitirul_animalelor.jpeg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
+.profile .cards:nth-child():hover {
+  transform: rotateY(180deg);
+}
+
+.profile .card:hover {
+  transform: rotateY(180deg);
+}
+
+.profile .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 25px;
+  -webkit-backface-visibility: hidden;
+  /* Safari */
+  backface-visibility: hidden;
+}
+
+.profile .flip-card-back {
+  background-color: #19191a;
+  color: white;
+  transform: rotateY(180deg);
+}
+
+.profile h2 {
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  text-align: center;
+  transform: translate(-50%, -50%);
+}
+
+/* SEARCH BAR */
+
+/* body {
+  background-color: #131315;
+  font-family: "Montserrat", monospace;
+  font-weight: bold;
+} */
+
+.profile .container {
+  width: 70%;
+  margin: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 400px;
+  transform: translate(-50%, -50%);
+}
+
+.profile .results-container {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.profile textarea:focus,
+.profile input:focus {
+  outline: none;
+}
+
+.profile .post {
+  display: flex;
+  flex-direction: row;
+  background-color: #282828;
+  padding: 2%;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 25px;
+}
+
+.profile .post:hover {
+  box-shadow: 0px 1px 0.5px #9985fb;
+}
+
+.profile .post img {
+  width: 100px;
+  height: 100px;
+}
+
+.profile .post h1 {
+  font-size: 20px;
+  margin: auto;
+  margin-left: 25px;
+}
+
+/* DRAG AND DROP */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+* .profile {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+.profile .drag-area body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #322b2b;
+}
+
+.profile .drag-area {
+  border: 10px dashed #dbbdbd;
+  height: 500px;
+  width: 700px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.profile .drag-area.active {
+  border: 10px dashed #b92c2c;
+}
+
+.profile .icon {
+  font-size: 100px;
+  color: #fff;
+}
+
+.profile .drag-area header {
+  font-size: 30px;
+  font-weight: 500;
+  color: #fff;
+}
+
+.profile .drag-area span {
+  font-size: 25px;
+  font-weight: 500;
+  color: #fff;
+  margin: 10px 0 15px 0;
+}
+
+.profile .drag-area button {
+  padding: 10px 25px;
+  font-size: 20px;
+  font-weight: 500;
+  border: none;
+  outline: none;
+  background: #fff;
+  color: #b92c2c;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.profile nav {
+  height: 100px;
+  color: #fff;
+}
+
+.profile nav input {
+  height: 50px;
+  width: 98%;
+  background-color: #131315;
+  border: 1px solid #9985fb;
+  height: 50px;
+  width: 500px;
+  border-radius: 25px;
+  padding-left: 2%;
+  color: white;
+}
+
+.profile .nav form {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+}
+.profile .nav input[type="text"] {
+  flex: 1;
+  margin-right: 10px;
+  padding: 5px;
+  border: none;
+  border-radius: 3px;
+}
+
+* .profile {
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+  margin: 0;
+  padding: 0;
+}
+.profile h1 {
+  text-align: center;
+  margin-top: 50px;
+  color: #333;
+}
+.profile form {
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+.profile label {
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
+}
+.profile input[type="text"],
+.profile input[type="email"],
+.profile input[type="password"],
+.profile textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  color: #333;
+  box-sizing: border-box;
+}
+.profile input[type="button"] {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.profile input[type="button"]:hover {
+  background-color: #555;
+}
+
+/* Style the Image Used to Trigger the Modal */
+.profile #myImg {
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.profile #myImg:hover {
+  opacity: 0.7;
+}
+
+/* The Modal (background) */
+.profile .modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.9); /* Black w/ opacity */
+}
+
+/* Modal Content (Image) */
+/* .modal-content {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+} */
+
+/* Caption of Modal Image (Image Text) - Same Width as the Image */
+/* #caption {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+  text-align: center;
+  color: #ccc;
+  padding: 10px 0;
+  height: 150px;
+} */
+
+/* Add Animation - Zoom in the Modal */
+/* .modal-content,
+#caption {
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+
+@keyframes zoom {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+} */
+
+/* ORDERS */
+* .orderss {
+  box-sizing: border-box;
+}
+
+* .orderss {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.orderss .container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.orderss .orders {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.orderss .order {
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+
+.orderss .order:hover {
+  background-color: #ddd;
+}
+
+.orderss .order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.orderss .order-amount {
+  font-weight: bold;
+}
+
+.orderss .books {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: none;
+}
+
+.orderss .book {
+  margin-top: 5px;
+  padding: 5px;
+  background-color: #eee;
+}
+
+.orderss .book-title {
+  font-weight: bold;
+}
+
+.orderss .book-price {
+  font-weight: bold;
+  float: right;
+}
+
+.orderss nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #333;
+  color: #fff;
+}
+.orderss nav button {
+  background-color: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 16px;
+  margin-right: 10px;
+}
+.orderss nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* BOOK */
+
+* .book {
+  box-sizing: border-box;
+}
+
+* .book {
+  font-family: "Montserrat", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f8f8f8;
+}
+
+.book .container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.book h1 {
+  text-align: center;
+  font-size: 36px;
+  font-weight: 700;
+  color: #333333;
+  margin-bottom: 20px;
+}
+
+.book p {
+  margin: 10px 0;
+  font-size: 18px;
+  color: #555555;
+}
+
+.book strong {
+  margin-right: 10px;
+  font-weight: 700;
+  color: #333333;
+}
+
+.book .book-summary {
+  font-style: italic;
+}
+
+.book .btn {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #f26722;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 700;
+  transition: all 0.3s ease-in-out;
+}
+
+.book .btn:hover {
+  background-color: #f9a266;
+}
+* .book {
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+  margin: 0;
+  padding: 0;
+}
+.book h1 {
+  text-align: center;
+  margin-top: 50px;
+  color: #333;
+}
+.book form {
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+.book label {
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
+}
+.book input[type="text"],
+.book input[type="email"],
+.book textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  color: #333;
+  box-sizing: border-box;
+}
+.book input[type="submit"] {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.book input[type="submit"]:hover {
+  background-color: #555;
+}
+
+/* Style the Image Used to Trigger the Modal */
+.book #myImg {
+  max-height: 250px;
+  border-radius: 5px;
+  cursor: none;
+  transition: 0.3s;
+}
+
+.book #myImg:hover {
+  opacity: 0.7;
+}
+
+/* The Modal (background) */
+.book .modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.9); /* Black w/ opacity */
+}
+
+/* Modal Content (Image) */
+.book .modal-content {
+  margin: auto;
+  display: block;
+  max-height: 8000px;
+}
+
+/* Caption of Modal Image (Image Text) - Same Width as the Image */
+.book #caption {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+  text-align: center;
+  color: #ccc;
+  padding: 10px 0;
+  height: 150px;
+}
+
+/* Add Animation - Zoom in the Modal */
+.book .modal-content,
+.book #caption {
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+
+@keyframes zoom {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+/* The Close Button */
+.book .close {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.book .close:hover,
+.book .close:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px) {
+  .book .modal-content {
+    width: 100%;
+  }
+}
+
+.book .cols {
+  display: flex;
+  flex: column;
+}
+.book .center {
+  /* display: flex; */
+  justify-content: center;
+}
+
+.book nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #333;
+  color: #fff;
+}
+.book nav button {
+  background-color: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 16px;
+  margin-right: 10px;
+}
+.book nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* CART */
+
+table.cart {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+table.cart th,
+table.cart td {
+  padding: 10px;
+  text-align: left;
+}
+
+table.cart thead {
+  background-color: #f1f1f1;
+}
+
+table.cart tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+table.cart tfoot td {
+  font-weight: bold;
+  text-align: right;
+}
+
+table.cart td:nth-child(3),
+table.cart td:nth-child(5),
+table.cart tfoot td:last-child {
+  text-align: right;
+}
+
+@media screen and (max-width: 600px) {
+  table.cart {
+    font-size: 12px;
+  }
+}
+
+/* /////////////////////// */
+
+.cart {
+  font-family: Arial, sans-serif;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th,
+td {
+  padding: 16px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #f5f5f5;
+}
+
+.checkout-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #008cba;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+}
+
+.checkout-btn:hover {
+  cursor: pointer;
+  background-color: #005f79;
+}
+
+.checkout-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #008cba;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+}
+
+.checkout-btn:hover {
+  cursor: pointer;
+  background-color: #005f79;
+}
+
+/* ADMIN */
+
+/* Set font and background color for the entire page */
+* .admin {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+}
+
+/* Style for the table */
+.admin #book-table {
+  margin: 20px auto;
+  border-collapse: collapse;
+  width: 80%;
+  max-width: 800px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Style for the table header */
+.admin #book-table thead {
+  background-color: #333;
+  color: #fff;
+}
+
+/* Style for the table header cells */
+.admin #book-table th {
+  padding: 10px;
+  text-align: left;
+}
+
+/* Style for the table rows */
+.admin #book-table tr {
+  border-bottom: 1px solid #ccc;
+}
+
+/* Style for alternating table rows */
+.admin #book-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* Style for table cells */
+.admin #book-table td {
+  padding: 10px;
+}
+
+/* Style for the edit and delete buttons */
+.admin button {
+  padding: 5px 10px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.admin button:hover {
+  background-color: #555;
+}
+
+.admin h1 {
+  margin: 24px;
+  text-align: center;
+}
+
+.admin #edit-form {
+  display: none;
+}
+
+.admin #edit-form {
+  display: none;
+  width: 400px;
+  margin: 20px auto;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+}
+
+.admin #edit-form label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.admin #edit-form input[type="text"],
+.admin #edit-form input[type="number"],
+.admin #edit-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+
+.admin #edit-form button[type="submit"] {
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.admin #edit-form button[type="submit"]:hover {
+  background-color: #3e8e41;
+}
+
+.profile nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #333;
+  color: #fff;
+}
+.profile nav button {
+  background-color: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 16px;
+  margin-right: 10px;
+}
+.profile nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.cart nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #333;
+  color: #fff;
+}
+.cart nav button {
+  background-color: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 16px;
+  margin-right: 10px;
+}
+.cart nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.admin nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #333;
+  color: #fff;
+}
+.admin nav button {
+  background-color: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 16px;
+  margin-right: 10px;
+}
+.admin nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.admin .table {
+  max-height: 600px;
+  overflow: scroll;
+}
+
+.admin footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #000;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+.admin .save-changes,
+.admin .add-book {
+  background-color: green;
+}
+
+.admin .save-changes:hover,
+.admin .add-book:hover {
+  background-color: darkgreen;
+}
+
+.admin #add-book-form {
+  display: none;
+}
+
+.admin #add-book-form {
+  display: none;
+  width: 400px;
+  margin: 20px auto;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+}
+
+.admin #add-book-form label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.admin #add-book-form input[type="text"],
+.admin #add-book-form input[type="number"],
+.admin #add-book-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+
+.admin #add-book-form button[type="submit"] {
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.admin #add-book-form button[type="submit"]:hover {
+  background-color: #3e8e41;
+}

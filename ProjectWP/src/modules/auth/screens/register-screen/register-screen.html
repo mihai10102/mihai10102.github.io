@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Register</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Rubik:400,700"
+    />
+    <link rel="stylesheet" href="./../../../../../app.css" />
+  </head>
+  <body>
+    <div class="login-form">
+      <form id="register-form">
+        <h1>Register</h1>
+        <div class="content">
+          <div class="input-field">
+            <input
+              type="text"
+              placeholder="Name"
+              autocomplete="nope"
+              id="name"
+            />
+          </div>
+          <div class="input-field">
+            <input
+              type="text"
+              placeholder="Username"
+              autocomplete="nope"
+              id="username"
+            />
+          </div>
+          <div class="input-field">
+            <input type="email" placeholder="Email" autocomplete="nope" />
+          </div>
+          <div class="input-field">
+            <input
+              type="password"
+              placeholder="Password"
+              autocomplete="new-password"
+              id="password"
+            />
+          </div>
+          <div class="input-field">
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              autocomplete="new-password"
+              id="confirm-password"
+            />
+          </div>
+        </div>
+        <div class="action">
+          <div class="registerButton" onclick="handleRegister()">Register</div>
+          <div class="loginButton" onclick="goToLogin()">Login</div>
+        </div>
+      </form>
+    </div>
+    <script src="../../../../../app.js"></script>
+  </body>
+</html>

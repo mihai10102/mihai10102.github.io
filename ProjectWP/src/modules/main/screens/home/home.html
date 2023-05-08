@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Bookstore</title>
+    <link rel="stylesheet" href="../../../../../app.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat"
+      rel="stylesheet"
+    />
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  </head>
+  <body class="home">
+    <nav>
+      <div>
+        <button>
+          <a
+            href="../../../../../index.html"
+            onclick="window.localStorage.removeItem('connectedUserId')"
+            >Logout</a
+          >
+        </button>
+      </div>
+      <form>
+        <input id="search" type="text" placeholder="Search..." />
+      </form>
+      <div>
+        <button><a href="../profile/profile.html">Profile</a></button>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="results-container"></div>
+    </div>
+    <div id="show-more"><strong>Show more...</strong></div>
+    <div id="show-less" style="display: none">
+      <strong>Show less...</strong>
+    </div>
+
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+      integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+      crossorigin="anonymous"
+    />
+
+    <!-- <table id="bookTable" colspan="asdas">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Author</th>
+          <th colspan="2">Buy</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table> -->
+
+    <!-- flip-card -->
+    <!-- <div class="cards">
+      <div class="card">
+        <div class="flip-card-back">
+          <h2>Click to see more <br /><span></span></h2>
+        </div>
+        <div class="image_container"></div>
+        <div class="text_back">
+          <div>
+            <h1>Cimitirul Animalelor</h1>
+            <p>Stephen King</p>
+            <span>See more </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="flip-card-back">
+          <h2>Click to see more <br /><span></span></h2>
+        </div>
+        <div class="image_container"></div>
+        <div class="text_back">
+          <div>
+            <h1>1984</h1>
+            <p>George Orwell</p>
+            <span>See more</span>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <footer>
+      <p>&copy; Book Shop</p>
+    </footer>
+  </body>
+  <script src="./home.js"></script>
+</html>

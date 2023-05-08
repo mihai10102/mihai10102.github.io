@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Book Shop</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Rubik:400,700"
+    />
+    <link rel="stylesheet" href="./app.css" />
+  </head>
+  <body>
+    <div class="login-form">
+      <form id="login-form">
+        <h1>Login</h1>
+        <div class="content">
+          <div class="input-field">
+            <input type="email" placeholder="Email" autocomplete="nope" />
+          </div>
+          <div class="input-field">
+            <input
+              type="password"
+              placeholder="Password"
+              autocomplete="new-password"
+            />
+          </div>
+        </div>
+        <div class="action">
+          <div class="registerButton" onclick="goToRegister()">Register</div>
+          <div class="loginButton" onclick="handleLogin()">Login</div>
+        </div>
+      </form>
+    </div>
+    <!-- partial -->
+  </body>
+  <script src="./app.js"></script>
+</html>

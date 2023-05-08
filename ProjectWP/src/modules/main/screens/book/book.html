@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Book Details</title>
+    <link rel="stylesheet" href="../../../../../app.css" />
+  </head>
+  <body class="book">
+    <nav>
+      <div>
+        <button><a href="../home/home.html">Home</a></button>
+      </div>
+      <div>
+        <button><a href="../cart/cart.html">Cart</a></button>
+      </div>
+    </nav>
+    <div class="container">
+      <h1 id="book-title">Book Title</h1>
+      <div class="cols">
+        <div>
+          <p id="author"><strong>Author:</strong> Author Name</p>
+          <p id="price"><strong>Price</strong>$13.12</p>
+          <p class="book-summary" id="description">
+            <strong>Summary:</strong> Lorem ipsum dolor sit amet, consectetur
+            adipiscing elit. Sed euismod, est vel pellentesque tincidunt, ipsum
+            tellus fringilla turpis, non tincidunt arcu augue vel erat.
+          </p>
+        </div>
+        <div class="center">
+          <!-- Trigger the Modal -->
+          <img id="myImg" src="../../../../assets/1984.jpeg" />
+
+          <!-- The Modal -->
+          <div id="myModal" class="modal">
+            <!-- The Close Button -->
+            <span class="close">&times;</span>
+
+            <!-- Modal Content (The Image) -->
+            <img class="modal-content" id="img01" />
+
+            <!-- Modal Caption (Image Text) -->
+            <div id="caption"></div>
+          </div>
+        </div>
+      </div>
+      <a href="#" class="btn" id="cart-btn">Add to cart</a>
+    </div>
+    <footer>
+      <p>&copy; Book Shop</p>
+    </footer>
+  </body>
+  <script src="./book.js"></script>
+</html>
