@@ -218,6 +218,41 @@ function drawBrickBreakerIcon(canvas) {
     ctx.closePath();
 }
 
+function drawCheckersIcon(canvas) {
+    const ctx = canvas.getContext('2d');
+    const squareSize = canvas.width / 4;
+
+    // Draw board
+    for (let row = 0; row < 4; row++) {
+        for (let col = 0; col < 4; col++) {
+            ctx.fillStyle = (row + col) % 2 === 0 ? '#ecf0f1' : '#34495e';
+            ctx.fillRect(col * squareSize, row * squareSize, squareSize, squareSize);
+        }
+    }
+
+    // Draw pieces
+    const pieces = [
+        {row: 0, col: 1, color: 'red'},
+        {row: 0, col: 3, color: 'red'},
+        {row: 1, col: 0, color: 'red'},
+        {row: 2, col: 1, color: 'black'},
+        {row: 3, col: 0, color: 'black'},
+        {row: 3, col: 2, color: 'black'}
+    ];
+
+    pieces.forEach(piece => {
+        const x = piece.col * squareSize + squareSize/2;
+        const y = piece.row * squareSize + squareSize/2;
+        ctx.beginPath();
+        ctx.arc(x, y, squareSize * 0.4, 0, Math.PI * 2);
+        ctx.fillStyle = piece.color;
+        ctx.fill();
+        ctx.strokeStyle = '#2c3e50';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+    });
+}
+
 // Initial drawings
 drawCube();
 drawFootballField();
@@ -246,4 +281,10 @@ setInterval(() => {
 const brickBreakerCanvas = document.getElementById('brickBreakerCanvas');
 if (brickBreakerCanvas) {
     drawBrickBreakerIcon(brickBreakerCanvas);
+}
+
+// Add to initialization
+const checkersCanvas = document.getElementById('checkersCanvas');
+if (checkersCanvas) {
+    drawCheckersIcon(checkersCanvas);
 } 
