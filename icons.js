@@ -183,6 +183,41 @@ function drawPlatformer() {
     platformerCtx.fillRect(45, 60, 15, 20);
 }
 
+// Add this with the other icon drawing functions
+function drawBrickBreakerIcon(canvas) {
+    const ctx = canvas.getContext('2d');
+    const width = canvas.width;
+    const height = canvas.height;
+
+    // Background
+    ctx.fillStyle = '#34495e';
+    ctx.fillRect(0, 0, width, height);
+
+    // Draw bricks
+    const brickColors = ['#e74c3c', '#e67e22', '#f1c40f', '#2ecc71', '#3498db'];
+    const brickRows = 5;
+    const brickHeight = 15;
+    const brickPadding = 5;
+    const brickOffsetTop = 20;
+
+    for (let r = 0; r < brickRows; r++) {
+        ctx.fillStyle = brickColors[r];
+        ctx.fillRect(20, brickOffsetTop + r * (brickHeight + brickPadding), 
+                    width - 40, brickHeight);
+    }
+
+    // Draw paddle
+    ctx.fillStyle = '#ecf0f1';
+    ctx.fillRect(width/2 - 25, height - 30, 50, 10);
+
+    // Draw ball
+    ctx.beginPath();
+    ctx.arc(width/2, height - 50, 6, 0, Math.PI * 2);
+    ctx.fillStyle = '#fff';
+    ctx.fill();
+    ctx.closePath();
+}
+
 // Initial drawings
 drawCube();
 drawFootballField();
@@ -205,4 +240,10 @@ setInterval(() => {
 // Add some animation
 setInterval(() => {
     draw2DPuzzle(); // Makes the 2D puzzle change colors
-}, 2000); 
+}, 2000);
+
+// Add this to the initialization section
+const brickBreakerCanvas = document.getElementById('brickBreakerCanvas');
+if (brickBreakerCanvas) {
+    drawBrickBreakerIcon(brickBreakerCanvas);
+} 

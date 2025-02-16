@@ -22,11 +22,99 @@
             font-size: 24px;
             margin: 10px 0;
         }
+        .touch-controls {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            padding: 10px;
+            justify-content: space-around;
+            max-width: 400px;
+            margin: 0 auto;
+            z-index: 1000;
+        }
+        
+        .touch-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.5);
+            border: 2px solid white;
+            color: white;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            touch-action: manipulation;
+        }
+        
+        .jump-btn {
+            right: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .touch-controls {
+                display: flex;
+            }
+            canvas {
+                touch-action: none;
+                max-width: 100%;
+            }
+        }
+        #game-container {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            margin: 20px;
+        }
+        #explanation-panel {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            max-width: 300px;
+        }
+        #explanation-panel h2 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        #explanation-panel ul {
+            padding-left: 20px;
+        }
+        #explanation-panel li {
+            margin: 5px 0;
+        }
     </style>
 </head>
 <body>
-    <div id="score">Score: 0</div>
-    <canvas id="gameCanvas" width="800" height="400"></canvas>
+    <div id="game-container">
+        <div id="score">Score: 0</div>
+        <canvas id="gameCanvas" width="800" height="400"></canvas>
+        <div id="explanation-panel">
+            <h2>Platform Adventure</h2>
+            <h3>Controls:</h3>
+            <p>← → or A/D: Move left/right</p>
+            <p>↑ or W or Space: Jump (double jump available!)</p>
+            <h3>Elements:</h3>
+            <ul>
+                <li>🟫 Regular Platform</li>
+                <li>🟧 Breakable Platform</li>
+                <li>🟦 Moving Platform</li>
+                <li>🔴 Enemy (avoid!)</li>
+                <li>🟡 Coin (+10 points)</li>
+                <li>🟨 Speed Boost</li>
+                <li>🟩 Jump Boost</li>
+                <li>🟦 Shield</li>
+                <li>🟩 Goal Door (final room)</li>
+            </ul>
+            <p>Health: ❤️❤️❤️</p>
+            <p>Goal: Reach the door in the final room!</p>
+        </div>
+    </div>
     <script src="game.js"></script>
 </body>
 </html> 
