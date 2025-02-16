@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Platform Adventure</title>
+    <style>
+        canvas {
+            border: 2px solid #333;
+            display: block;
+            margin: 0 auto;
+            background: linear-gradient(to bottom, #87CEEB, #e0f6ff);
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        #score {
+            font-size: 24px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="score">Score: 0</div>
+    <canvas id="gameCanvas" width="800" height="400"></canvas>
+    <script src="game.js"></script>
+</body>
+</html> 

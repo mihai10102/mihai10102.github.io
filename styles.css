@@ -5,6 +5,8 @@ body {
   padding: 2rem;
   background-color: #f5f5f5;
   color: #333;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
 }
 
 h1 {
@@ -26,6 +28,10 @@ h1 {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
 }
 
 .project-card:hover {
@@ -42,4 +48,10 @@ h1 {
 
 .project-card a:hover {
   color: #2980b9;
+}
+
+.project-icon {
+  width: 150px;
+  height: 150px;
+  border-radius: 4px;
 } 
