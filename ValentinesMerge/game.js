@@ -502,15 +502,15 @@ class Item {
                 const dy = item.y - this.y;
                 const distance = Math.sqrt(dx * dx + dy * dy);
                 const minDist = this.radius + item.radius;
-                // Scale merge tolerance with level
-                const mergeTolerance = 20 + (this.level * 2); // Base tolerance + level bonus
+                // Much larger merge tolerance
+                const mergeTolerance = 40 + (this.level * 5); // Large base tolerance + bigger level bonus
                 if (distance < minDist + mergeTolerance) {
                     if (item.level === this.level) {
                         this.glowing = true;
                         item.glowing = true;
                         
-                        // More forgiving merge distance that scales with level
-                        if (distance < minDist + (15 + this.level * 1.5)) {
+                        // Very forgiving merge distance
+                        if (distance < minDist + (30 + this.level * 3)) {
                             this.merging = true;
                             item.merging = true;
                             this.merge(item);
@@ -561,7 +561,7 @@ class Item {
                     const distance = Math.sqrt(dx * dx + dy * dy);
                     const minDist = this.radius + item.radius;
 
-                    if (distance < minDist + 8) { // More forgiving collision
+                    if (distance < minDist + 15) { // Even more forgiving collision
                         // Collision response
                         const angle = Math.atan2(dy, dx);
                         const targetX = item.x - Math.cos(angle) * minDist;
@@ -574,8 +574,8 @@ class Item {
                         // Transfer horizontal momentum for rolling
                         if (this.rolling || item.rolling) {
                             const impactSpeed = Math.abs(this.vx - item.vx);
-                            this.vx = -Math.cos(angle) * impactSpeed * 0.8;
-                            item.vx = Math.cos(angle) * impactSpeed * 0.8;
+                            this.vx = -Math.cos(angle) * impactSpeed * 0.6; // Reduced bounce to help items stay closer
+                            item.vx = Math.cos(angle) * impactSpeed * 0.6;
                             
                             // Add rolling animation
                             this.angularVel = this.vx * 0.2;
