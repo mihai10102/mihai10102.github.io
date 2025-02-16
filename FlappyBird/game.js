@@ -3,7 +3,8 @@ class Bird {
         this.canvas = canvas;
         this.x = canvas.width / 3;
         this.y = canvas.height / 2;
-        this.radius = 20;
+        this.width = 60;
+        this.height = 15;
         this.velocity = 0;
         this.gravity = 0.6;
         this.jumpForce = -10;
@@ -15,32 +16,81 @@ class Bird {
         ctx.translate(this.x, this.y);
         ctx.rotate(this.rotation);
         
-        // Body
+        // Fuselage (main body)
+        ctx.fillStyle = '#ffffff';
         ctx.beginPath();
-        ctx.arc(0, 0, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = '#f1c40f';
+        ctx.moveTo(-this.width/2, 0);
+        ctx.quadraticCurveTo(
+            -this.width/2, -this.height/2,
+            -this.width/2 + this.height, -this.height/2
+        );
+        ctx.lineTo(this.width/2 - this.height, -this.height/2);
+        ctx.quadraticCurveTo(
+            this.width/2, -this.height/2,
+            this.width/2, 0
+        );
+        ctx.quadraticCurveTo(
+            this.width/2, this.height/2,
+            this.width/2 - this.height, this.height/2
+        );
+        ctx.lineTo(-this.width/2 + this.height, this.height/2);
+        ctx.quadraticCurveTo(
+            -this.width/2, this.height/2,
+            -this.width/2, 0
+        );
         ctx.fill();
-        ctx.strokeStyle = '#d35400';
-        ctx.lineWidth = 2;
+        ctx.strokeStyle = '#ddd';
+        ctx.lineWidth = 0.5;
         ctx.stroke();
         
-        // Eye
+        // Nose cone
+        ctx.fillStyle = '#f1f1f1';
         ctx.beginPath();
-        ctx.arc(this.radius/2, -this.radius/3, this.radius/4, 0, Math.PI * 2);
-        ctx.fillStyle = 'white';
+        ctx.moveTo(this.width/2, -this.height/2);
+        ctx.lineTo(this.width/2 + this.height, 0);
+        ctx.lineTo(this.width/2, this.height/2);
+        ctx.closePath();
         ctx.fill();
-        ctx.fillStyle = 'black';
+        ctx.stroke();
+        
+        // Main wings
+        ctx.fillStyle = '#ffffff';
         ctx.beginPath();
-        ctx.arc(this.radius/2, -this.radius/3, this.radius/8, 0, Math.PI * 2);
+        ctx.moveTo(-this.width/6, 0);
+        ctx.lineTo(-this.width/4, -this.height*2);
+        ctx.lineTo(this.width/4, -this.height*2);
+        ctx.lineTo(this.width/6, 0);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+        
+        // Tail wing
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.moveTo(-this.width/2, -this.height/3);
+        ctx.lineTo(-this.width/2 - this.height, -this.height*1.5);
+        ctx.lineTo(-this.width/2 + this.height/2, -this.height/3);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+        
+        // Windows
+        ctx.fillStyle = '#2c3e50';
+        ctx.beginPath();
+        ctx.moveTo(0, -this.height/2 + 1);
+        for(let i = 0; i < 3; i++) {
+            const x = i * this.width/6;
+            ctx.rect(x, -this.height/2 + 1, this.width/8, this.height/3);
+        }
         ctx.fill();
         
-        // Beak
+        // Detail lines
+        ctx.strokeStyle = '#ddd';
+        ctx.lineWidth = 0.5;
         ctx.beginPath();
-        ctx.moveTo(this.radius - 2, 0);
-        ctx.lineTo(this.radius + 10, 0);
-        ctx.lineTo(this.radius - 2, 5);
-        ctx.fillStyle = '#e67e22';
-        ctx.fill();
+        ctx.moveTo(-this.width/3, 0);
+        ctx.lineTo(this.width/2, 0);
+        ctx.stroke();
         
         ctx.restore();
     }
@@ -49,16 +99,16 @@ class Bird {
         this.velocity += this.gravity;
         this.y += this.velocity;
         
-        // Rotation based on velocity
-        this.rotation = Math.min(Math.max(this.velocity * 0.05, -0.5), 0.5);
+        // More dramatic rotation based on velocity
+        this.rotation = Math.min(Math.max(this.velocity * 0.08, -0.8), 0.8);
 
         // Keep bird within canvas
-        if (this.y < this.radius) {
-            this.y = this.radius;
+        if (this.y < this.height) {
+            this.y = this.height;
             this.velocity = 0;
         }
-        if (this.y > this.canvas.height - this.radius) {
-            this.y = this.canvas.height - this.radius;
+        if (this.y > this.canvas.height - this.height) {
+            this.y = this.canvas.height - this.height;
             this.velocity = 0;
         }
     }
@@ -79,29 +129,58 @@ class Pipe {
         this.canvas = canvas;
         this.x = x;
         this.width = 60;
-        this.gap = 150;
+        this.gap = 170; // Slightly larger gap for plane
         this.speed = 3;
         this.passed = false;
         
         // Random gap position
         this.gapY = Math.random() * (canvas.height - 200) + 100;
+        this.stalactiteLength = 30; // Length of the pointy part
     }
 
     draw(ctx) {
-        // Top pipe
-        ctx.fillStyle = '#2ecc71';
-        ctx.fillRect(this.x, 0, this.width, this.gapY - this.gap/2);
+        // Top stalactite
+        ctx.fillStyle = '#5d4037';
+        ctx.beginPath();
+        ctx.moveTo(this.x, 0);
+        ctx.lineTo(this.x + this.width, 0);
+        ctx.lineTo(this.x + this.width/2, this.gapY - this.gap/2 + this.stalactiteLength);
+        ctx.closePath();
+        ctx.fill();
         
-        // Bottom pipe
-        ctx.fillRect(this.x, this.gapY + this.gap/2, 
-                    this.width, this.canvas.height - (this.gapY + this.gap/2));
+        // Add highlight to top stalactite
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+        ctx.beginPath();
+        ctx.moveTo(this.x + 5, 0);
+        ctx.lineTo(this.x + 15, 0);
+        ctx.lineTo(this.x + this.width/2, this.gapY - this.gap/2);
+        ctx.closePath();
+        ctx.fill();
         
-        // Pipe caps
-        ctx.fillStyle = '#27ae60';
-        ctx.fillRect(this.x - 3, this.gapY - this.gap/2 - 20, 
-                    this.width + 6, 20);
-        ctx.fillRect(this.x - 3, this.gapY + this.gap/2, 
-                    this.width + 6, 20);
+        // Bottom stalactite
+        ctx.fillStyle = '#4e342e';
+        ctx.beginPath();
+        ctx.moveTo(this.x, this.canvas.height);
+        ctx.lineTo(this.x + this.width, this.canvas.height);
+        ctx.lineTo(this.x + this.width/2, this.gapY + this.gap/2 - this.stalactiteLength);
+        ctx.closePath();
+        ctx.fill();
+        
+        // Add rock texture
+        ctx.strokeStyle = 'rgba(62, 39, 35, 0.5)';
+        ctx.lineWidth = 2;
+        for(let i = 0; i < 3; i++) {
+            // Top texture
+            ctx.beginPath();
+            ctx.moveTo(this.x + this.width * (i/3), 0);
+            ctx.lineTo(this.x + this.width/2, this.gapY - this.gap/2 + this.stalactiteLength);
+            ctx.stroke();
+            // Bottom texture
+            ctx.beginPath();
+            ctx.moveTo(this.x + this.width * (i/3), this.canvas.height);
+            ctx.lineTo(this.x + this.width/2, this.gapY + this.gap/2 - this.stalactiteLength);
+            ctx.stroke();
+        }
     }
 
     update() {
@@ -114,16 +193,16 @@ class Pipe {
 
     checkCollision(bird) {
         // Check if bird hits top pipe
-        if (bird.x + bird.radius > this.x && 
-            bird.x - bird.radius < this.x + this.width && 
-            bird.y - bird.radius < this.gapY - this.gap/2) {
+        if (bird.x + bird.width > this.x && 
+            bird.x - bird.width < this.x + this.width && 
+            bird.y - bird.height < this.gapY - this.gap/2) {
             return true;
         }
         
         // Check if bird hits bottom pipe
-        if (bird.x + bird.radius > this.x && 
-            bird.x - bird.radius < this.x + this.width && 
-            bird.y + bird.radius > this.gapY + this.gap/2) {
+        if (bird.x + bird.width > this.x && 
+            bird.x - bird.width < this.x + this.width && 
+            bird.y + bird.height > this.gapY + this.gap/2) {
             return true;
         }
         
@@ -231,11 +310,36 @@ function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
     // Draw background
+    // Cave background
     const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-    gradient.addColorStop(0, '#87CEEB');
-    gradient.addColorStop(1, '#E0F6FF');
+    gradient.addColorStop(0, '#4a3728');
+    gradient.addColorStop(1, '#2d2217');
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Add some cave details
+    // Background stalactites
+    ctx.fillStyle = 'rgba(43, 32, 23, 0.5)';
+    for(let i = 0; i < 20; i++) {
+        const x = (Date.now()/50 + i * 200) % canvas.width;
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x + 30, 0);
+        ctx.lineTo(x + 15, 50);
+        ctx.closePath();
+        ctx.fill();
+    }
+
+    // Add some rock texture and highlights
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
+    for(let i = 0; i < 50; i++) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        const size = Math.random() * 4 + 2;
+        ctx.beginPath();
+        ctx.arc(x, y, size, 0, Math.PI * 2);
+        ctx.fill();
+    }
 
     pipes.forEach(pipe => pipe.draw(ctx));
     bird.draw(ctx);
