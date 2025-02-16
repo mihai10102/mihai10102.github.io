@@ -256,48 +256,75 @@ function drawCheckersIcon(canvas) {
 function drawFlappyBirdIcon(canvas) {
     const ctx = canvas.getContext('2d');
     
-    // Sky background
+    // Cave background
     const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-    gradient.addColorStop(0, '#87CEEB');
-    gradient.addColorStop(1, '#E0F6FF');
+    gradient.addColorStop(0, '#2c3e50');
+    gradient.addColorStop(1, '#34495e');
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-    // Pipes
-    ctx.fillStyle = '#2ecc71';
-    ctx.fillRect(90, 0, 30, 50);
-    ctx.fillRect(90, 100, 30, 150);
-    
-    // Pipe caps
-    ctx.fillStyle = '#27ae60';
-    ctx.fillRect(87, 50, 36, 10);
-    ctx.fillRect(87, 100, 36, 10);
-    
-    // Bird
+    // Stalactites
+    ctx.fillStyle = '#7f8c8d';
     ctx.beginPath();
-    ctx.arc(60, 75, 15, 0, Math.PI * 2);
+    ctx.moveTo(90, 0);
+    ctx.lineTo(120, 0);
+    ctx.lineTo(105, 50);
+    ctx.closePath();
+    ctx.fill();
+    
+    ctx.beginPath();
+    ctx.moveTo(90, 150);
+    ctx.lineTo(120, 150);
+    ctx.lineTo(105, 100);
+    ctx.closePath();
+    ctx.fill();
+    
+    // Plane
+    ctx.save();
+    ctx.translate(60, 75);
+    ctx.fillStyle = '#e74c3c';
+    ctx.fillRect(-20, -10, 40, 20);
+    ctx.beginPath();
+    ctx.moveTo(20, 0);
+    ctx.lineTo(30, -5);
+    ctx.lineTo(30, 5);
+    ctx.closePath();
+    ctx.fill();
+    
+    // Wings
+    ctx.fillStyle = '#c0392b';
+    ctx.beginPath();
+    ctx.moveTo(-10, -10);
+    ctx.lineTo(10, -24);
+    ctx.lineTo(20, -10);
+    ctx.closePath();
+    ctx.fill();
+    
+    // Cockpit
+    ctx.fillStyle = '#3498db';
+    ctx.fillRect(-7, -7, 14, 10);
+    ctx.restore();
+}
+
+function drawRPGIcon(canvas) {
+    const ctx = canvas.getContext('2d');
+    
+    // Background
+    ctx.fillStyle = '#2c3e50';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Player
+    ctx.fillStyle = '#3498db';
+    ctx.fillRect(60, 60, 30, 30);
+    
+    // Enemy
+    ctx.fillStyle = '#e74c3c';
+    ctx.fillRect(90, 90, 30, 30);
+    
+    // Item
     ctx.fillStyle = '#f1c40f';
-    ctx.fill();
-    ctx.strokeStyle = '#d35400';
-    ctx.lineWidth = 2;
-    ctx.stroke();
-    
-    // Eye
     ctx.beginPath();
-    ctx.arc(67, 70, 4, 0, Math.PI * 2);
-    ctx.fillStyle = 'white';
-    ctx.fill();
-    ctx.beginPath();
-    ctx.arc(67, 70, 2, 0, Math.PI * 2);
-    ctx.fillStyle = 'black';
-    ctx.fill();
-    
-    // Beak
-    ctx.beginPath();
-    ctx.moveTo(73, 75);
-    ctx.lineTo(83, 75);
-    ctx.lineTo(73, 79);
-    ctx.fillStyle = '#e67e22';
+    ctx.arc(40, 100, 10, 0, Math.PI * 2);
     ctx.fill();
 }
 
@@ -341,4 +368,10 @@ if (checkersCanvas) {
 const flappyBirdCanvas = document.getElementById('flappyBirdCanvas');
 if (flappyBirdCanvas) {
     drawFlappyBirdIcon(flappyBirdCanvas);
+}
+
+// Add to initialization
+const rpgCanvas = document.getElementById('rpgCanvas');
+if (rpgCanvas) {
+    drawRPGIcon(rpgCanvas);
 } 

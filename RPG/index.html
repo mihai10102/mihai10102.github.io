@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2D RPG</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #2c3e50;
+            font-family: Arial, sans-serif;
+            color: white;
+            margin: 0;
+            overflow: hidden;
+        }
+        canvas {
+            border: 2px solid #34495e;
+            margin: 20px;
+        }
+        .ui {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 5px;
+        }
+        .inventory {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 50px);
+            gap: 5px;
+        }
+        .inventory-slot {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #34495e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .item-count {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            font-size: 12px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 2px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="ui">
+        <div>HP: <span id="hp">100/100</span></div>
+        <div>Level: <span id="level">1</span></div>
+        <div>XP: <span id="xp">0/100</span></div>
+    </div>
+    <div class="inventory" id="inventory">
+        <h3>Inventory</h3>
+        <div class="inventory-grid" id="inventoryGrid"></div>
+    </div>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <script src="game.js"></script>
+</body>
+</html> 
