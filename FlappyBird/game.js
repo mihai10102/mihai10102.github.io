@@ -3,8 +3,8 @@ class Bird {
         this.canvas = canvas;
         this.x = canvas.width / 3;
         this.y = canvas.height / 2;
-        this.width = 60;
-        this.height = 15;
+        this.width = 100;
+        this.height = 25;
         this.velocity = 0;
         this.gravity = 0.6;
         this.jumpForce = -10;
@@ -16,80 +16,73 @@ class Bird {
         ctx.translate(this.x, this.y);
         ctx.rotate(this.rotation);
         
-        // Fuselage (main body)
-        ctx.fillStyle = '#ffffff';
-        ctx.beginPath();
-        ctx.moveTo(-this.width/2, 0);
-        ctx.quadraticCurveTo(
-            -this.width/2, -this.height/2,
-            -this.width/2 + this.height, -this.height/2
-        );
-        ctx.lineTo(this.width/2 - this.height, -this.height/2);
-        ctx.quadraticCurveTo(
-            this.width/2, -this.height/2,
-            this.width/2, 0
-        );
-        ctx.quadraticCurveTo(
-            this.width/2, this.height/2,
-            this.width/2 - this.height, this.height/2
-        );
-        ctx.lineTo(-this.width/2 + this.height, this.height/2);
-        ctx.quadraticCurveTo(
-            -this.width/2, this.height/2,
-            -this.width/2, 0
-        );
-        ctx.fill();
-        ctx.strokeStyle = '#ddd';
-        ctx.lineWidth = 0.5;
-        ctx.stroke();
-        
-        // Nose cone
-        ctx.fillStyle = '#f1f1f1';
-        ctx.beginPath();
-        ctx.moveTo(this.width/2, -this.height/2);
-        ctx.lineTo(this.width/2 + this.height, 0);
-        ctx.lineTo(this.width/2, this.height/2);
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
-        
-        // Main wings
-        ctx.fillStyle = '#ffffff';
-        ctx.beginPath();
-        ctx.moveTo(-this.width/6, 0);
-        ctx.lineTo(-this.width/4, -this.height*2);
-        ctx.lineTo(this.width/4, -this.height*2);
-        ctx.lineTo(this.width/6, 0);
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
-        
-        // Tail wing
+        // Main fuselage
         ctx.fillStyle = '#ffffff';
         ctx.beginPath();
         ctx.moveTo(-this.width/2, -this.height/3);
-        ctx.lineTo(-this.width/2 - this.height, -this.height*1.5);
-        ctx.lineTo(-this.width/2 + this.height/2, -this.height/3);
+        ctx.bezierCurveTo(
+            -this.width/2, -this.height/2,
+            this.width/3, -this.height/2,
+            this.width/2, 0
+        );
+        ctx.bezierCurveTo(
+            this.width/3, this.height/2,
+            -this.width/2, this.height/2,
+            -this.width/2, this.height/3
+        );
         ctx.closePath();
         ctx.fill();
+        ctx.strokeStyle = '#ddd';
+        ctx.lineWidth = 0.5;
         ctx.stroke();
         
         // Windows
         ctx.fillStyle = '#2c3e50';
-        ctx.beginPath();
-        ctx.moveTo(0, -this.height/2 + 1);
-        for(let i = 0; i < 3; i++) {
-            const x = i * this.width/6;
-            ctx.rect(x, -this.height/2 + 1, this.width/8, this.height/3);
-        }
-        ctx.fill();
+        const windowCount = 8;
+        const windowSpacing = this.width/12;
+        const windowSize = {w: this.width/15, h: this.height/3};
+        const windowY = -this.height/4;
         
-        // Detail lines
-        ctx.strokeStyle = '#ddd';
-        ctx.lineWidth = 0.5;
+        for(let i = 0; i < windowCount; i++) {
+            const x = -this.width/3 + i * windowSpacing;
+            ctx.beginPath();
+            ctx.roundRect(x, windowY, windowSize.w, windowSize.h, 2);
+            ctx.fill();
+        }
+        
+        // Tail fin
+        ctx.fillStyle = '#ffffff';
         ctx.beginPath();
-        ctx.moveTo(-this.width/3, 0);
-        ctx.lineTo(this.width/2, 0);
+        ctx.moveTo(-this.width/2, 0);
+        ctx.lineTo(-this.width/2 - this.height/2, -this.height*1.5);
+        ctx.lineTo(-this.width/2 + this.height, 0);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+        
+        // Wings
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.moveTo(-this.width/4, 0);
+        ctx.lineTo(-this.width/6, -this.height/2);
+        ctx.lineTo(this.width/4, -this.height/2);
+        ctx.lineTo(this.width/3, 0);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+        
+        // Engine
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.ellipse(0, this.height/2, this.width/8, this.height/2, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        
+        // Engine intake
+        ctx.strokeStyle = '#ddd';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(0, this.height/2, this.height/3, 0, Math.PI * 2);
         ctx.stroke();
         
         ctx.restore();
@@ -99,8 +92,8 @@ class Bird {
         this.velocity += this.gravity;
         this.y += this.velocity;
         
-        // More dramatic rotation based on velocity
-        this.rotation = Math.min(Math.max(this.velocity * 0.08, -0.8), 0.8);
+        // Smoother, more limited rotation
+        this.rotation = Math.min(Math.max(this.velocity * 0.05, -0.3), 0.3);
 
         // Keep bird within canvas
         if (this.y < this.height) {

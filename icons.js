@@ -328,6 +328,32 @@ function drawRPGIcon(canvas) {
     ctx.fill();
 }
 
+function drawValentinesMergeIcon(canvas) {
+    const ctx = canvas.getContext('2d');
+    
+    // Background
+    ctx.fillStyle = '#ffe6e6';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Draw some hearts
+    const hearts = [
+        {x: 40, y: 40, color: '#ff6b6b'},
+        {x: 90, y: 60, color: '#ff4757'},
+        {x: 60, y: 90, color: '#ff1744'}
+    ];
+    
+    hearts.forEach(heart => {
+        ctx.fillStyle = heart.color;
+        ctx.beginPath();
+        ctx.moveTo(heart.x, heart.y);
+        ctx.quadraticCurveTo(heart.x, heart.y - 15, heart.x + 15, heart.y - 15);
+        ctx.quadraticCurveTo(heart.x + 30, heart.y - 15, heart.x + 30, heart.y);
+        ctx.quadraticCurveTo(heart.x + 30, heart.y + 15, heart.x + 15, heart.y + 25);
+        ctx.quadraticCurveTo(heart.x, heart.y + 15, heart.x, heart.y);
+        ctx.fill();
+    });
+}
+
 // Initial drawings
 drawCube();
 drawFootballField();
@@ -374,4 +400,10 @@ if (flappyBirdCanvas) {
 const rpgCanvas = document.getElementById('rpgCanvas');
 if (rpgCanvas) {
     drawRPGIcon(rpgCanvas);
+}
+
+// Add to initialization
+const valentinesMergeCanvas = document.getElementById('valentinesMergeCanvas');
+if (valentinesMergeCanvas) {
+    drawValentinesMergeIcon(valentinesMergeCanvas);
 } 
