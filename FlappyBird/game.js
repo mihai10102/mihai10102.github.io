@@ -167,14 +167,21 @@ function reset() {
 }
 
 function handleInput(e) {
-    if ((e.code === 'Space' || e.type === 'click' || e.type === 'touchstart') && !gameOver) {
+    // Prevent default behavior for space and touch to avoid page scrolling
+    if (e.code === 'Space' || e.type === 'touchstart') {
+        e.preventDefault();
+    }
+
+    // Handle game start and jump
+    if ((e.code === 'Space' || e.type === 'mousedown' || e.type === 'touchstart') && !gameOver) {
         if (!gameStarted) {
             gameStarted = true;
             spawnPipe();
         }
         bird.jump();
     }
-    if (e.code === 'Space' && gameOver) {
+    // Handle restart
+    if ((e.code === 'Space' || e.type === 'mousedown' || e.type === 'touchstart') && gameOver) {
         reset();
     }
 }
@@ -184,6 +191,8 @@ function update() {
         bird.y = canvas.height / 2 + Math.sin(Date.now() / 300) * 20;
         return;
     }
+
+    if (gameOver) return;
 
     bird.update();
 
@@ -199,6 +208,7 @@ function update() {
         
         if (pipe.checkCollision(bird)) {
             gameOver = true;
+            return;
         }
         
         if (pipe.checkPassed(bird)) {
@@ -256,8 +266,9 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
-document.addEventListener('keydown', handleInput);
-canvas.addEventListener('click', handleInput);
-canvas.addEventListener('touchstart', handleInput);
+// Update event listeners
+window.addEventListener('keydown', handleInput);
+canvas.addEventListener('mousedown', handleInput);
+canvas.addEventListener('touchstart', handleInput, { passive: false });
 
 gameLoop(); 
