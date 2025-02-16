@@ -253,6 +253,54 @@ function drawCheckersIcon(canvas) {
     });
 }
 
+function drawFlappyBirdIcon(canvas) {
+    const ctx = canvas.getContext('2d');
+    
+    // Sky background
+    const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    gradient.addColorStop(0, '#87CEEB');
+    gradient.addColorStop(1, '#E0F6FF');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Pipes
+    ctx.fillStyle = '#2ecc71';
+    ctx.fillRect(90, 0, 30, 50);
+    ctx.fillRect(90, 100, 30, 150);
+    
+    // Pipe caps
+    ctx.fillStyle = '#27ae60';
+    ctx.fillRect(87, 50, 36, 10);
+    ctx.fillRect(87, 100, 36, 10);
+    
+    // Bird
+    ctx.beginPath();
+    ctx.arc(60, 75, 15, 0, Math.PI * 2);
+    ctx.fillStyle = '#f1c40f';
+    ctx.fill();
+    ctx.strokeStyle = '#d35400';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    
+    // Eye
+    ctx.beginPath();
+    ctx.arc(67, 70, 4, 0, Math.PI * 2);
+    ctx.fillStyle = 'white';
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(67, 70, 2, 0, Math.PI * 2);
+    ctx.fillStyle = 'black';
+    ctx.fill();
+    
+    // Beak
+    ctx.beginPath();
+    ctx.moveTo(73, 75);
+    ctx.lineTo(83, 75);
+    ctx.lineTo(73, 79);
+    ctx.fillStyle = '#e67e22';
+    ctx.fill();
+}
+
 // Initial drawings
 drawCube();
 drawFootballField();
@@ -287,4 +335,10 @@ if (brickBreakerCanvas) {
 const checkersCanvas = document.getElementById('checkersCanvas');
 if (checkersCanvas) {
     drawCheckersIcon(checkersCanvas);
+}
+
+// Add to initialization
+const flappyBirdCanvas = document.getElementById('flappyBirdCanvas');
+if (flappyBirdCanvas) {
+    drawFlappyBirdIcon(flappyBirdCanvas);
 } 
