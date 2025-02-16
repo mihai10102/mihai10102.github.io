@@ -253,56 +253,84 @@ function drawCheckersIcon(canvas) {
     });
 }
 
-function drawFlappyBirdIcon(canvas) {
+function drawFlappyPlaneIcon(canvas) {
     const ctx = canvas.getContext('2d');
     
-    // Cave background
-    const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-    gradient.addColorStop(0, '#2c3e50');
-    gradient.addColorStop(1, '#34495e');
-    ctx.fillStyle = gradient;
+    // Background
+    ctx.fillStyle = '#4a3728';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-    // Stalactites
-    ctx.fillStyle = '#7f8c8d';
-    ctx.beginPath();
-    ctx.moveTo(90, 0);
-    ctx.lineTo(120, 0);
-    ctx.lineTo(105, 50);
-    ctx.closePath();
-    ctx.fill();
-    
-    ctx.beginPath();
-    ctx.moveTo(90, 150);
-    ctx.lineTo(120, 150);
-    ctx.lineTo(105, 100);
-    ctx.closePath();
-    ctx.fill();
-    
-    // Plane
+    // Draw plane
     ctx.save();
-    ctx.translate(60, 75);
-    ctx.fillStyle = '#e74c3c';
-    ctx.fillRect(-20, -10, 40, 20);
+    ctx.translate(75, 75);
+    
+    // Main fuselage
+    ctx.fillStyle = '#ffffff';
     ctx.beginPath();
-    ctx.moveTo(20, 0);
-    ctx.lineTo(30, -5);
-    ctx.lineTo(30, 5);
+    ctx.moveTo(-25, -5);
+    ctx.bezierCurveTo(
+        -25, -10,
+        15, -10,
+        25, 0
+    );
+    ctx.bezierCurveTo(
+        15, 10,
+        -25, 10,
+        -25, 5
+    );
     ctx.closePath();
     ctx.fill();
+    ctx.strokeStyle = '#ddd';
+    ctx.lineWidth = 0.5;
+    ctx.stroke();
+    
+    // Windows
+    ctx.fillStyle = '#2c3e50';
+    for(let i = 0; i < 4; i++) {
+        const x = -15 + i * 8;
+        ctx.beginPath();
+        ctx.roundRect(x, -3, 5, 2, 1);
+        ctx.fill();
+    }
     
     // Wings
-    ctx.fillStyle = '#c0392b';
+    ctx.fillStyle = '#ffffff';
     ctx.beginPath();
-    ctx.moveTo(-10, -10);
-    ctx.lineTo(10, -24);
-    ctx.lineTo(20, -10);
+    ctx.moveTo(-10, 0);
+    ctx.lineTo(-5, -8);
+    ctx.lineTo(10, -8);
+    ctx.lineTo(15, 0);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+    
+    // Tail fin
+    ctx.beginPath();
+    ctx.moveTo(-25, 0);
+    ctx.lineTo(-30, -15);
+    ctx.lineTo(-20, 0);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+    
+    // Cave stalactites
+    ctx.fillStyle = '#2ecc71';
+    ctx.beginPath();
+    ctx.moveTo(120, 0);
+    ctx.lineTo(140, 0);
+    ctx.lineTo(130, 30);
     ctx.closePath();
     ctx.fill();
     
-    // Cockpit
-    ctx.fillStyle = '#3498db';
-    ctx.fillRect(-7, -7, 14, 10);
+    // Add torch glow
+    const gradient = ctx.createRadialGradient(30, 30, 5, 30, 30, 30);
+    gradient.addColorStop(0, 'rgba(255, 150, 0, 0.3)');
+    gradient.addColorStop(1, 'rgba(255, 50, 0, 0)');
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.arc(30, 30, 30, 0, Math.PI * 2);
+    ctx.fill();
+    
     ctx.restore();
 }
 
@@ -393,7 +421,7 @@ if (checkersCanvas) {
 // Add to initialization
 const flappyBirdCanvas = document.getElementById('flappyBirdCanvas');
 if (flappyBirdCanvas) {
-    drawFlappyBirdIcon(flappyBirdCanvas);
+    drawFlappyPlaneIcon(flappyBirdCanvas);
 }
 
 // Add to initialization

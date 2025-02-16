@@ -5,6 +5,9 @@ class Bird {
         this.y = canvas.height / 2;
         this.width = 100;
         this.height = 25;
+        this.hitboxWidth = 80;  // Slightly smaller than visual width
+        this.hitboxHeight = 20; // Slightly smaller than visual height
+        this.hitboxOffsetX = -5; // Shift hitbox slightly left to match nose
         this.velocity = 0;
         this.gravity = 0.6;
         this.jumpForce = -10;
@@ -115,6 +118,37 @@ class Bird {
         this.velocity = 0;
         this.rotation = 0;
     }
+
+    checkCollision(pipe) {
+        const hitboxX = this.x + this.hitboxOffsetX;
+        const hitboxY = this.y - this.hitboxHeight/2;
+        
+        // Check collision with top pipe
+        if (hitboxX < pipe.x + pipe.width &&
+            hitboxX + this.hitboxWidth > pipe.x &&
+            hitboxY < pipe.gapY - pipe.gap/2) {
+            return true;
+        }
+        
+        // Check collision with bottom pipe
+        if (hitboxX < pipe.x + pipe.width &&
+            hitboxX + this.hitboxWidth > pipe.x &&
+            hitboxY + this.hitboxHeight > pipe.gapY + pipe.gap/2) {
+            return true;
+        }
+        
+        return false;
+    }
+
+    drawHitbox(ctx) {
+        ctx.save();
+        ctx.strokeStyle = 'rgba(255, 0, 0, 0.5)';
+        ctx.lineWidth = 1;
+        const hitboxX = this.x + this.hitboxOffsetX;
+        const hitboxY = this.y - this.hitboxHeight/2;
+        ctx.strokeRect(hitboxX, hitboxY, this.hitboxWidth, this.hitboxHeight);
+        ctx.restore();
+    }
 }
 
 class Pipe {
@@ -129,6 +163,8 @@ class Pipe {
         // Random gap position
         this.gapY = Math.random() * (canvas.height - 200) + 100;
         this.stalactiteLength = 30; // Length of the pointy part
+        // Add height property for collision detection
+        this.height = this.gapY - this.gap/2; // Height of top pipe
     }
 
     draw(ctx) {
@@ -182,24 +218,6 @@ class Pipe {
 
     isOffScreen() {
         return this.x + this.width < 0;
-    }
-
-    checkCollision(bird) {
-        // Check if bird hits top pipe
-        if (bird.x + bird.width > this.x && 
-            bird.x - bird.width < this.x + this.width && 
-            bird.y - bird.height < this.gapY - this.gap/2) {
-            return true;
-        }
-        
-        // Check if bird hits bottom pipe
-        if (bird.x + bird.width > this.x && 
-            bird.x - bird.width < this.x + this.width && 
-            bird.y + bird.height > this.gapY + this.gap/2) {
-            return true;
-        }
-        
-        return false;
     }
 
     checkPassed(bird) {
@@ -278,7 +296,7 @@ function update() {
     pipes.forEach((pipe, index) => {
         pipe.update();
         
-        if (pipe.checkCollision(bird)) {
+        if (bird.checkCollision(pipe)) {
             gameOver = true;
             return;
         }
@@ -309,6 +327,16 @@ function draw() {
     gradient.addColorStop(1, '#2d2217');
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Draw torches on the walls
+    const torchSpacing = 200;
+    const torchHeight = 100;
+    for(let x = (Date.now()/50) % torchSpacing; x < canvas.width; x += torchSpacing) {
+        // Top torches
+        drawTorch(ctx, x, 50);
+        // Bottom torches
+        drawTorch(ctx, x + torchSpacing/2, canvas.height - 50);
+    }
 
     // Add some cave details
     // Background stalactites
@@ -355,6 +383,35 @@ function draw() {
         ctx.fillText(`Score: ${score}`, canvas.width/2, canvas.height/2);
         ctx.fillText('Press SPACE to restart', canvas.width/2, canvas.height/2 + 50);
     }
+}
+
+function drawTorch(ctx, x, y) {
+    // Torch handle
+    ctx.fillStyle = '#8B4513';
+    ctx.fillRect(x - 5, y - 20, 10, 30);
+    
+    // Flame base
+    const gradient = ctx.createRadialGradient(x, y - 25, 5, x, y - 25, 20);
+    gradient.addColorStop(0, 'rgba(255, 150, 0, 0.9)');
+    gradient.addColorStop(1, 'rgba(255, 50, 0, 0)');
+    ctx.fillStyle = gradient;
+    
+    // Animate flame
+    const flameHeight = 20 + Math.sin(Date.now() / 100) * 5;
+    ctx.beginPath();
+    ctx.moveTo(x - 10, y - 20);
+    ctx.quadraticCurveTo(x, y - 40 - flameHeight, x + 10, y - 20);
+    ctx.closePath();
+    ctx.fill();
+    
+    // Light glow
+    const glowGradient = ctx.createRadialGradient(x, y - 25, 10, x, y - 25, 60);
+    glowGradient.addColorStop(0, 'rgba(255, 150, 0, 0.2)');
+    glowGradient.addColorStop(1, 'rgba(255, 50, 0, 0)');
+    ctx.fillStyle = glowGradient;
+    ctx.beginPath();
+    ctx.arc(x, y - 25, 60, 0, Math.PI * 2);
+    ctx.fill();
 }
 
 function gameLoop() {
