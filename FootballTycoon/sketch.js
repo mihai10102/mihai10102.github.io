@@ -316,6 +316,7 @@ function mouseDragged(){
 		}
 	}}
 function mouseReleased(){
+	// Handle regular team swaps
 	for(let i=0;i<team.length;i++){
 		if(dist(mouseX,mouseY,team[i].x,team[i].y) <= 75){
 			toSwap.push(team[i].index);
@@ -340,10 +341,69 @@ function mouseReleased(){
 			swap(toSwap[0],toSwap[1]);
 		}
 	}
-
 	toSwap = [];
 	initialCoo = [];
-	if(sub) subSwap = [];}
+
+	// Handle reserve swaps
+	if(sub && subSwap.length > 0) {
+		// Find the team player being swapped out
+		let teamPlayer;
+		for(let p of team) {
+			if(p.rezerve) {
+				teamPlayer = p;
+				break;
+			}
+		}
+
+		if(teamPlayer && subSwap[0]) {
+			if(mouseX >= width*2/3 - width/6 && mouseX <= width*2/3 + width/6 &&
+			   mouseY >= height/3 - height/4 && mouseY <= height/3 + height/4) {
+				
+				let teamIndex = team.indexOf(teamPlayer);
+				let reserveIndex = reserves.indexOf(subSwap[0]);
+
+				if(teamIndex !== -1 && reserveIndex !== -1) {
+					let reservePlayer = subSwap[0];
+					
+					// Create new Player instance with reserve player's data
+					let newTeamPlayer = new Player(
+						reservePlayer.name,
+						reservePlayer.ovr,
+						reservePlayer.TOP,
+						teamPlayer.index
+					);
+					newTeamPlayer.x = teamPlayer.x;
+					newTeamPlayer.y = teamPlayer.y;
+
+					// Create new transferPlayer instance with team player's data
+					let newReservePlayer = new transferPlayer(
+						teamPlayer.name,
+						teamPlayer.ovr,
+						teamPlayer.TOP,
+						reserveIndex
+					);
+					
+					// Update arrays
+					team[teamIndex] = newTeamPlayer;
+					reserves[reserveIndex] = newReservePlayer;
+					
+					// Recalculate team overall rating
+					let totalOvr = 0;
+					for(let p of team) {
+						totalOvr += p.ovr;
+					}
+					myOvr = round(totalOvr/11);
+					
+					// Reset states
+					sub = false;
+					done = false;
+					detailMode = true;
+				}
+			}
+		}
+	}
+	subSwap = [];
+}
 //SCREEN SELECTORS
 function showMenu(){
 	push();
@@ -403,8 +463,8 @@ function showMatch(){
 	strokeWeight(3);
 	rect(width  /2,height  /4,width/2,height/4 + height/8);
 	rect(width  /2,height*3/4,width/2,height/8           );
-	ellipse(width  /4 + 50*wRatio,height/2 + 50*hRatio,100*wRatio,100*hRatio);
-	ellipse(width*3/4 - 50*wRatio,height/2 + 50*hRatio,100*wRatio,100*hRatio);
+	ellipse(width  /4 + 50*wRatio,height/2 + 50*hRatio,100*wRatio,100*wRatio);
+	ellipse(width*3/4 - 50*wRatio,height/2 + 50*hRatio,100*wRatio,100*wRatio);
 	fill(0);
 	noStroke();
 	triangle(width/4 + 70*wRatio,height/2 + 5*hRatio,width/4 + 70*wRatio,height/2 + 95*hRatio,width/4,height/2 + 50*hRatio);
@@ -535,10 +595,10 @@ function drawExitButton(){
 	fill(255);
 	strokeWeight(1);
 	stroke(0);
-	ellipse(width - 50*wRatio,50*hRatio,100*wRatio,100*hRatio);
+	ellipse(width - 50*wRatio,50*hRatio,100*wRatio,100*wRatio);
 	textSize(36*wRatio);
 	fill(0);
-	text("X",width - 50*wRatio,50*hRatio);
+	text("X",width - 50*wRatio,50*wRatio);
 	pop();}
 function setAllScreensFalse(){
 	menuScreen = false;
@@ -601,7 +661,7 @@ function showMatchDetails(){
 	stroke(0);strokeWeight(2);
 	rect(width/2,height/2,width*7/8,height*7/8);
 	fill(255);
-	ellipse(width/2 + width*7/16 - 25*wRatio,height/2 - height*7/16 + 25*hRatio,45*wRatio,45*hRatio);
+	ellipse(width/2 + width*7/16 - 25*wRatio,height/2 - height*7/16 + 25*hRatio,45*wRatio,45*wRatio);
 	strokeWeight(1);
 	textSize(72*wRatio);
 	fill(0,255,0);
@@ -660,8 +720,8 @@ function drawTrainingScreen(player){
 	fill(100);
 	rect(width*3/4,height/3,600*wRatio,100*hRatio);
 	rect(940*wRatio + (1115-940)/2 * wRatio,450*hRatio + (600-450)/2 *hRatio,(1115-940)*wRatio,(600-450)*hRatio);
-	ellipse(width*3/4 - 250*wRatio,height/1.8,100*wRatio,100*hRatio);
-	ellipse(width*3/4 + 250*wRatio,height/1.8,100*wRatio,100*hRatio);
+	ellipse(width*3/4 - 250*wRatio,height/1.8,100*wRatio,100*wRatio);
+	ellipse(width*3/4 + 250*wRatio,height/1.8,100*wRatio,100*wRatio);
 	fill(255);
 	text("-",width*3/4 - 250*wRatio,height/1.8);
 	text("+",width*3/4 + 250*wRatio,height/1.8);
