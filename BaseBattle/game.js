@@ -536,10 +536,14 @@ function update() {
         updateGemsDisplay();
         
         // Unlock next base if available
-        const currentIndex = BASES.findIndex(b => b.id === currentBase.id);
-        if (currentIndex < BASES.length - 1) {
-            BASES[currentIndex + 1].unlocked = true;
-            localStorage.setItem('baseBattleProgress', JSON.stringify(BASES.map(b => b.unlocked)));
+        if (currentBase) {
+            const currentIndex = BASES.findIndex(b => b.id === currentBase.id);
+            if (currentIndex < BASES.length - 1) {
+                BASES[currentIndex + 1].unlocked = true;
+                localStorage.setItem('baseBattleProgress', JSON.stringify(BASES.map(b => b.unlocked)));
+            }
+        } else {
+            console.error("currentBase is null or undefined");
         }
     }
 }
