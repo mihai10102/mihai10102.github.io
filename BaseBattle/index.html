@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base Battle</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #2c3e50;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+        canvas {
+            border: 3px solid #34495e;
+            border-radius: 5px;
+            margin: 20px;
+        }
+        .hud {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.7);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .shop {
+            position: fixed;
+            bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        .unit-button {
+            padding: 10px;
+            background: #3498db;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .unit-button:hover {
+            transform: scale(1.1);
+        }
+        .unit-button:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+        .screen.active {
+            display: flex;
+        }
+        .menu-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 20px;
+        }
+        .base-card {
+            width: 200px;
+            height: 250px;
+            background: rgba(0,0,0,0.7);
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .base-card:hover {
+            transform: scale(1.05);
+        }
+        .base-card.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .base-preview {
+            width: 180px;
+            height: 120px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .upgrade-shop {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.8);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .upgrade-button {
+            margin: 5px;
+            padding: 10px;
+            background: #3498db;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+        }
+        .upgrade-container {
+            background: rgba(0,0,0,0.7);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            max-width: 800px;
+        }
+        .upgrade-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .upgrade-info {
+            flex: 1;
+            margin-right: 20px;
+        }
+        .upgrade-info h3 {
+            margin: 0;
+            color: #3498db;
+        }
+        .upgrade-info p {
+            margin: 5px 0;
+            color: #bdc3c7;
+        }
+        .currency-display {
+            background: rgba(0,0,0,0.7);
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 20px;
+            color: #f1c40f;
+        }
+    </style>
+</head>
+<body>
+    <div id="menuScreen" class="screen active">
+        <h1>Base Battle</h1>
+        <div class="currency-display">
+            Gems: <span id="gemsDisplay">0</span>
+        </div>
+        <div class="upgrade-container">
+            <h2>Global Upgrades</h2>
+            <div id="globalUpgrades"></div>
+        </div>
+        <div class="menu-container">
+            <!-- Base cards will be added here dynamically -->
+        </div>
+    </div>
+    
+    <div id="gameScreen" class="screen">
+        <div class="hud">
+            Gold: <span id="gold">0</span>
+            <br>
+            Base HP: <span id="baseHp">100</span>
+        </div>
+        <canvas id="gameCanvas" width="800" height="400"></canvas>
+        <div class="shop" id="shop">
+            <button class="unit-button" data-unit="warrior" data-cost="10">
+                Warrior (10g)
+            </button>
+            <button class="unit-button" data-unit="archer" data-cost="15">
+                Archer (15g)
+            </button>
+            <button class="unit-button" data-unit="knight" data-cost="25">
+                Knight (25g)
+            </button>
+        </div>
+    </div>
+    <script src="game.js"></script>
+</body>
+</html> 

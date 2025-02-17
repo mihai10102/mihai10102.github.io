@@ -664,6 +664,73 @@ canvas.addEventListener('click', (e) => {
     }
 });
 
+function mergeAllOfLevel() {
+    let mergeHappened = false;
+    // Group items by level
+    const itemsByLevel = {};
+    items.forEach(item => {
+        if (!item.merging && !item.falling) {  // Only consider items that have landed
+            if (!itemsByLevel[item.level]) {
+                itemsByLevel[item.level] = [];
+            }
+            itemsByLevel[item.level].push(item);
+        }
+    });
+
+    // For each level that has at least 2 items
+    Object.entries(itemsByLevel).forEach(([itemLevel, levelItems]) => {
+        while (levelItems.length >= 2) {
+            mergeHappened = true;
+            const item1 = levelItems.pop();
+            const item2 = levelItems.pop();
+            
+            // Position the merged item at the average position of the two items
+            const avgX = (item1.x + item2.x) / 2;
+            const avgY = (item1.y + item2.y) / 2;
+            
+            // Create new merged item
+            const mergedItem = new Item(avgX, avgY, parseInt(itemLevel) + 1);
+            mergedItem.falling = false;
+            mergedItem.targetScale = 1.2;
+            setTimeout(() => mergedItem.targetScale = 1, 200);
+            
+            // Remove old items and add new one
+            items = items.filter(item => item !== item1 && item !== item2);
+            items.push(mergedItem);
+            
+            // Update score
+            updateScore(mergedItem.level * 10);
+            
+            // Update highest level
+            if (mergedItem.level > highestLevel) {
+                highestLevel = mergedItem.level;
+            }
+        }
+    });
+    return mergeHappened;
+}
+
+// Update button event listener
+const mergeAllBtn = document.getElementById('mergeAllBtn');
+mergeAllBtn.addEventListener('click', () => {
+    if (!mergeAllBtn.disabled) {
+        const merged = mergeAllOfLevel();
+        if (merged) {
+            // Visual feedback
+            mergeAllBtn.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                mergeAllBtn.style.transform = 'scale(1)';
+            }, 100);
+            
+            // Disable button briefly
+            mergeAllBtn.disabled = true;
+            setTimeout(() => {
+                mergeAllBtn.disabled = false;
+            }, 500);
+        }
+    }
+});
+
 function update() {
     if (!currentItem) {
         spawnItem();
@@ -674,6 +741,18 @@ function update() {
     if (currentItem) {
         currentItem.update();
     }
+
+    // Update merge button state
+    const hasMatchingPairs = items.some(item1 => 
+        items.some(item2 => 
+            item1 !== item2 && 
+            item1.level === item2.level && 
+            !item1.merging && !item2.merging &&
+            !item1.falling && !item2.falling  // Only consider landed items
+        )
+    );
+    mergeAllBtn.disabled = !hasMatchingPairs;
+    mergeAllBtn.style.opacity = hasMatchingPairs ? '1' : '0.5';
 }
 
 function draw() {

@@ -382,6 +382,46 @@ function drawValentinesMergeIcon(canvas) {
     });
 }
 
+function drawBaseBattleIcon(canvas) {
+    const ctx = canvas.getContext('2d');
+    
+    // Background
+    ctx.fillStyle = '#2c3e50';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Ground
+    ctx.fillStyle = '#34495e';
+    ctx.fillRect(0, 120, canvas.width, 30);
+    
+    // Player Base (left)
+    ctx.fillStyle = '#2980b9';
+    ctx.fillRect(20, 50, 30, 70);
+    ctx.fillStyle = '#ecf0f1';
+    ctx.fillRect(25, 60, 8, 15);
+    ctx.fillRect(37, 60, 8, 15);
+    
+    // Enemy Base (right)
+    ctx.fillStyle = '#c0392b';
+    ctx.fillRect(100, 50, 30, 70);
+    ctx.fillStyle = '#ecf0f1';
+    ctx.fillRect(105, 60, 8, 15);
+    ctx.fillRect(117, 60, 8, 15);
+    
+    // Units
+    // Player warrior
+    ctx.fillStyle = '#e74c3c';
+    ctx.fillRect(45, 80, 15, 25);
+    
+    // Enemy orc
+    ctx.fillStyle = '#8e44ad';
+    ctx.fillRect(90, 80, 15, 25);
+    
+    // Health bars
+    ctx.fillStyle = '#2ecc71';
+    ctx.fillRect(45, 70, 15, 3);
+    ctx.fillRect(90, 70, 15, 3);
+}
+
 // Initial drawings
 drawCube();
 drawFootballField();
@@ -434,4 +474,10 @@ if (rpgCanvas) {
 const valentinesMergeCanvas = document.getElementById('valentinesMergeCanvas');
 if (valentinesMergeCanvas) {
     drawValentinesMergeIcon(valentinesMergeCanvas);
+}
+
+// Add to initialization section at the bottom of the file
+const baseBattleCanvas = document.getElementById('baseBattleCanvas');
+if (baseBattleCanvas) {
+    drawBaseBattleIcon(baseBattleCanvas);
 } 

@@ -14,6 +14,38 @@
             margin: 0;
             overflow: hidden;
         }
+        .game-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .merge-button {
+            padding: 10px 20px;
+            background-color: #ff4757;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            transform: scale(1);
+        }
+        .merge-button:hover {
+            background-color: #ff6b6b;
+            transform: scale(1.05);
+        }
+        .merge-button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            transform: scale(1);
+            opacity: 0.5;
+        }
         canvas {
             border: 3px solid #ff6b6b;
             border-radius: 10px;
@@ -29,7 +61,12 @@
 </head>
 <body>
     <div class="score">Score: <span id="score">0</span></div>
-    <canvas id="gameCanvas" width="400" height="600"></canvas>
+    <div class="game-container">
+        <canvas id="gameCanvas" width="400" height="600"></canvas>
+        <div class="controls">
+            <button id="mergeAllBtn" class="merge-button">Merge All</button>
+        </div>
+    </div>
     <script src="game.js"></script>
 </body>
 </html> 
