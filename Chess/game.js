@@ -215,7 +215,7 @@ const RANKS = ['8', '7', '6', '5', '4', '3', '2', '1'];
 
 class ChessGame {
     constructor() {
-        this.board = this.createBoard();
+        this.board = this.initializeBoard();
         this.currentPlayer = 'white';
         this.selectedPiece = null;
         this.validMoves = [];
@@ -229,6 +229,11 @@ class ChessGame {
         this.inCheck = null;
         this.setupEventListeners();
         this.moveCount = 0;
+        this.selectedOpponent = null;
+        this.playerColor = null;
+        this.isMenuOpen = true;
+        
+        this.setupMenu();
     }
 
     getMoveNotation(piece, fromX, fromY, toX, toY, isCapture) {
@@ -238,7 +243,7 @@ class ChessGame {
         return `${pieceSymbol}${fromSquare}${isCapture ? 'x' : '-'}${toSquare}`;
     }
 
-    createBoard() {
+    initializeBoard() {
         const board = Array(8).fill().map(() => Array(8).fill(null));
         
         // Setup pawns
@@ -273,7 +278,7 @@ class ChessGame {
     }
 
     handleClick(x, y) {
-        if (this.currentPlayer === 'black' || this.isAIThinking) return;
+        if (this.isMenuOpen || this.currentPlayer !== this.playerColor || this.isAIThinking) return;
 
         const clickedPiece = this.board[y][x];
 
@@ -283,9 +288,9 @@ class ChessGame {
                     this.selectedPiece = null;
                     this.validMoves = [];
                     
-                    if (!this.isCheckmate('black')) {
-                        this.currentPlayer = 'black';
-                        gameStatus.textContent = "Black's Turn\n(AI thinking...)";
+                    if (!this.isCheckmate(this.currentPlayer === 'white' ? 'black' : 'white')) {
+                        this.currentPlayer = this.currentPlayer === 'white' ? 'black' : 'white';
+                        gameStatus.textContent = `${this.currentPlayer.charAt(0).toUpperCase() + this.currentPlayer.slice(1)}'s Turn (AI thinking...)`;
                         setTimeout(() => this.makeAIMove(), 500);
                     }
                 }
@@ -302,25 +307,38 @@ class ChessGame {
     }
 
     evaluatePosition() {
-        // Simple material count
         let score = 0;
-        const values = {
-            'pawn': 100,
-            'knight': 300,
-            'bishop': 300,
-            'rook': 500,
-            'queen': 900,
-            'king': 20000
-        };
 
+        // Evaluate material
         for (let y = 0; y < 8; y++) {
             for (let x = 0; x < 8; x++) {
                 const piece = this.board[y][x];
                 if (piece) {
-                    score += piece.color === 'white' ? values[piece.type] : -values[piece.type];
+                    const pieceValue = PIECE_VALUES[piece.type];
+                    const positionValue = POSITION_VALUES[piece.type][piece.color === 'white' ? y : 7 - y][x];
+                    
+                    if (piece.color === 'black') {
+                        score += pieceValue + positionValue;
+                    } else {
+                        score -= pieceValue + positionValue;
+                    }
                 }
             }
         }
+
+        // Add bonus for mobility
+        const blackMoves = this.getAllMoves('black').length;
+        const whiteMoves = this.getAllMoves('white').length;
+        score += (blackMoves - whiteMoves) * 10;
+
+        // Add bonus for check
+        if (this.isKingInCheck('white')) {
+            score += 50;
+        }
+        if (this.isKingInCheck('black')) {
+            score -= 50;
+        }
+
         return score;
     }
 
@@ -773,55 +791,146 @@ class ChessGame {
     }
 
     makeAIMove() {
+        if (this.isAIThinking) return;
         this.isAIThinking = true;
-        
-        if (this.isCheckmate('black')) {
-            gameStatus.textContent = "Checkmate! White wins!";
-            this.isAIThinking = false;
-            return;
-        }
 
-        // Increase timeout to 5 seconds
-        const moveTimeout = setTimeout(() => {
-            console.log('AI move timed out completely');
-            this.isAIThinking = false;
-            // Force a move if we timeout
-            const moves = this.getAllMoves('black');
-            if (moves.length > 0) {
-                const randomMove = moves[Math.floor(Math.random() * moves.length)];
-                this.movePiece(randomMove.piece, randomMove.to.x, randomMove.to.y);
-                this.currentPlayer = 'white';
-                gameStatus.textContent = "White's Turn";
-                this.draw();
+        if (this.selectedOpponent === 'martin') {
+            // Random move logic
+            const possibleMoves = this.getAllMoves(this.currentPlayer);
+            const randomMove = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+            
+            setTimeout(() => {
+                if (randomMove) {
+                    this.movePiece(randomMove.piece, randomMove.to.x, randomMove.to.y);
+                    this.currentPlayer = this.playerColor;
+                    this.isAIThinking = false;
+                    gameStatus.textContent = `${this.playerColor.charAt(0).toUpperCase() + this.playerColor.slice(1)}'s Turn (Your Turn)`;
+                    this.draw();
+                }
+            }, 500);
+        } else {
+            // Strategic AI logic
+            const depth = 3;
+            let bestMoveSoFar = null;
+
+            const aiTimeout = setTimeout(() => {
+                console.log('AI move timed out, using best move found');
+                if (bestMoveSoFar) {
+                    this.movePiece(bestMoveSoFar.piece, bestMoveSoFar.to.x, bestMoveSoFar.to.y);
+                    this.currentPlayer = this.playerColor;
+                    this.isAIThinking = false;
+                    gameStatus.textContent = `${this.playerColor.charAt(0).toUpperCase() + this.playerColor.slice(1)}'s Turn (Your Turn)`;
+                    this.draw();
+                }
+            }, 3000);
+
+            bestMoveSoFar = this.findBestMove(depth);
+            clearTimeout(aiTimeout);
+            
+            setTimeout(() => {
+                if (bestMoveSoFar) {
+                    this.movePiece(bestMoveSoFar.piece, bestMoveSoFar.to.x, bestMoveSoFar.to.y);
+                    this.currentPlayer = this.playerColor;
+                    this.isAIThinking = false;
+                    gameStatus.textContent = `${this.playerColor.charAt(0).toUpperCase() + this.playerColor.slice(1)}'s Turn (Your Turn)`;
+                    this.draw();
+                }
+            }, 500);
+        }
+    }
+
+    findBestMove(depth) {
+        let bestMove = null;
+        let bestValue = -Infinity;
+        const alpha = -Infinity;
+        const beta = Infinity;
+
+        const possibleMoves = this.getAllMoves('black');
+
+        for (const move of possibleMoves) {
+            // Make move
+            const originalPiece = this.board[move.to.y][move.to.x];
+            this.board[move.from.y][move.from.x] = null;
+            this.board[move.to.y][move.to.x] = move.piece;
+            move.piece.x = move.to.x;
+            move.piece.y = move.to.y;
+
+            // Evaluate position
+            const value = this.minimax(depth - 1, alpha, beta, false);
+
+            // Undo move
+            this.board[move.from.y][move.from.x] = move.piece;
+            this.board[move.to.y][move.to.x] = originalPiece;
+            move.piece.x = move.from.x;
+            move.piece.y = move.from.y;
+
+            if (value > bestValue) {
+                bestValue = value;
+                bestMove = move;
             }
-        }, 5000);
-
-        // Try to find an opening move first
-        let bestMove = this.findOpeningMove();
-        
-        // If no opening move found, use minimax
-        if (!bestMove) {
-            bestMove = this.findBestMove();
         }
-        
-        clearTimeout(moveTimeout);
-        
-        if (bestMove) {
-            if (this.movePiece(bestMove.piece, bestMove.to.x, bestMove.to.y)) {
-                this.moveCount++;
-                if (this.isCheckmate('white')) {
-                    gameStatus.textContent = "Checkmate! Black wins!";
-                } else {
-                    this.currentPlayer = 'white';
-                    gameStatus.textContent = "White's Turn";
+
+        return bestMove;
+    }
+
+    minimax(depth, alpha, beta, isMaximizing) {
+        if (depth === 0) {
+            return this.evaluatePosition();
+        }
+
+        const moves = this.getAllMoves(isMaximizing ? 'black' : 'white');
+
+        if (isMaximizing) {
+            let maxEval = -Infinity;
+            for (const move of moves) {
+                // Make move
+                const originalPiece = this.board[move.to.y][move.to.x];
+                this.board[move.from.y][move.from.x] = null;
+                this.board[move.to.y][move.to.x] = move.piece;
+                move.piece.x = move.to.x;
+                move.piece.y = move.to.y;
+
+                const evaluation = this.minimax(depth - 1, alpha, beta, false);
+                maxEval = Math.max(maxEval, evaluation);
+
+                // Undo move
+                this.board[move.from.y][move.from.x] = move.piece;
+                this.board[move.to.y][move.to.x] = originalPiece;
+                move.piece.x = move.from.x;
+                move.piece.y = move.from.y;
+
+                alpha = Math.max(alpha, evaluation);
+                if (beta <= alpha) {
+                    break; // Beta cutoff
                 }
             }
+            return maxEval;
         } else {
-            gameStatus.textContent = "Stalemate! Game is a draw.";
-        }
+            let minEval = Infinity;
+            for (const move of moves) {
+                // Make move
+                const originalPiece = this.board[move.to.y][move.to.x];
+                this.board[move.from.y][move.from.x] = null;
+                this.board[move.to.y][move.to.x] = move.piece;
+                move.piece.x = move.to.x;
+                move.piece.y = move.to.y;
 
-        this.isAIThinking = false;
-        this.draw();
+                const evaluation = this.minimax(depth - 1, alpha, beta, true);
+                minEval = Math.min(minEval, evaluation);
+
+                // Undo move
+                this.board[move.from.y][move.from.x] = move.piece;
+                this.board[move.to.y][move.to.x] = originalPiece;
+                move.piece.x = move.from.x;
+                move.piece.y = move.from.y;
+
+                beta = Math.min(beta, evaluation);
+                if (beta <= alpha) {
+                    break; // Alpha cutoff
+                }
+            }
+            return minEval;
+        }
     }
 
     isKingInCheck(color) {
@@ -948,6 +1057,7 @@ class ChessGame {
             this.inCheck = opponentColor;
             if (this.isCheckmate(opponentColor)) {
                 gameStatus.textContent = `Checkmate! ${piece.color === 'white' ? 'White' : 'Black'} wins!`;
+                this.showNewGameButton();
                 return true;
             }
             gameStatus.textContent = `${opponentColor === 'white' ? 'White' : 'Black'} is in check!`;
@@ -970,6 +1080,12 @@ class ChessGame {
         // Update move history display
         const moveElement = document.getElementById(`${piece.color}-last-move`);
         moveElement.textContent = `${piece.color.charAt(0).toUpperCase() + piece.color.slice(1)}: ${moveNotation}`;
+
+        // Check for pawn promotion
+        if (piece.type === 'pawn' && (newY === 0 || newY === 7)) {
+            // Promote to queen
+            piece.type = 'queen';
+        }
 
         return true;
     }
@@ -1074,6 +1190,23 @@ class ChessGame {
             }
         }
 
+        // Add after drawing squares but before pieces
+        if (this.lastMove) {
+            ctx.fillStyle = 'rgba(255, 255, 0, 0.3)'; // Yellow highlight
+            ctx.fillRect(
+                this.lastMove.from.x * SQUARE_SIZE, 
+                this.lastMove.from.y * SQUARE_SIZE, 
+                SQUARE_SIZE, 
+                SQUARE_SIZE
+            );
+            ctx.fillRect(
+                this.lastMove.to.x * SQUARE_SIZE, 
+                this.lastMove.to.y * SQUARE_SIZE, 
+                SQUARE_SIZE, 
+                SQUARE_SIZE
+            );
+        }
+
         ctx.restore();
     }
 
@@ -1139,6 +1272,92 @@ class ChessGame {
             }
         }
         return attackers;
+    }
+
+    setupMenu() {
+        const menuOverlay = document.getElementById('menuOverlay');
+        const opponentCards = document.querySelectorAll('.opponent-card');
+        const colorButtons = document.querySelectorAll('[data-color]');
+        const startGameBtn = document.getElementById('startGameBtn');
+
+        opponentCards.forEach(card => {
+            card.addEventListener('click', () => {
+                opponentCards.forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                this.selectedOpponent = card.dataset.opponent;
+                this.checkStartReady();
+            });
+        });
+
+        colorButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                colorButtons.forEach(b => b.classList.remove('selected'));
+                button.classList.add('selected');
+                this.playerColor = button.dataset.color;
+                this.checkStartReady();
+            });
+        });
+
+        startGameBtn.addEventListener('click', () => {
+            menuOverlay.style.display = 'none';
+            this.isMenuOpen = false;
+            this.startNewGame();
+        });
+    }
+
+    checkStartReady() {
+        const startGameBtn = document.getElementById('startGameBtn');
+        startGameBtn.disabled = !(this.selectedOpponent && this.playerColor);
+    }
+
+    startNewGame() {
+        // Reset all game state
+        this.board = this.initializeBoard();
+        this.currentPlayer = 'white';
+        this.selectedPiece = null;
+        this.validMoves = [];
+        this.capturedPieces = {
+            white: [],
+            black: []
+        };
+        this.lastMove = null;
+        this.isAIThinking = false;
+        this.inCheck = null;
+        this.moveCount = 0;
+
+        // Update displays
+        this.updateCapturedPiecesDisplay();
+        document.getElementById('white-last-move').textContent = 'White: ';
+        document.getElementById('black-last-move').textContent = 'Black: ';
+
+        // Set initial game status
+        if (this.playerColor === 'black') {
+            gameStatus.textContent = "White's Turn (AI thinking...)";
+            setTimeout(() => this.makeAIMove(), 500);
+        } else {
+            gameStatus.textContent = "White's Turn (Your Turn)";
+        }
+
+        this.draw();
+    }
+
+    showNewGameButton() {
+        const newGameBtn = document.createElement('button');
+        newGameBtn.textContent = 'New Game';
+        newGameBtn.className = 'menu-button';
+        newGameBtn.style.position = 'absolute';
+        newGameBtn.style.top = '50%';
+        newGameBtn.style.left = '50%';
+        newGameBtn.style.transform = 'translate(-50%, -50%)';
+        newGameBtn.style.zIndex = '1000';
+        
+        newGameBtn.addEventListener('click', () => {
+            newGameBtn.remove();
+            document.getElementById('menuOverlay').style.display = 'flex';
+            this.isMenuOpen = true;
+        });
+
+        document.querySelector('.game-container').appendChild(newGameBtn);
     }
 }
 
