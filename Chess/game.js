@@ -278,7 +278,7 @@ class ChessGame {
     }
 
     handleClick(x, y) {
-        if (this.isMenuOpen || this.currentPlayer !== this.playerColor || this.isAIThinking) return;
+        if (this.isMenuOpen || this.isAIThinking) return;
 
         const clickedPiece = this.board[y][x];
 
@@ -298,7 +298,7 @@ class ChessGame {
                 this.selectedPiece = null;
                 this.validMoves = [];
             }
-        } else if (clickedPiece && clickedPiece.color === this.currentPlayer) {
+        } else if (clickedPiece && clickedPiece.color === 'white') {  // Only check if it's a white piece
             this.selectedPiece = clickedPiece;
             this.validMoves = clickedPiece.getValidMoves(this.board);
         }
@@ -794,45 +794,34 @@ class ChessGame {
         if (this.isAIThinking) return;
         this.isAIThinking = true;
 
+        // AI should always play as black regardless of player's color choice
+        const aiColor = 'black';
+
         if (this.selectedOpponent === 'martin') {
             // Random move logic
-            const possibleMoves = this.getAllMoves(this.currentPlayer);
+            const possibleMoves = this.getAllMoves(aiColor);  // Always get black's moves
             const randomMove = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
             
             setTimeout(() => {
                 if (randomMove) {
                     this.movePiece(randomMove.piece, randomMove.to.x, randomMove.to.y);
-                    this.currentPlayer = this.playerColor;
+                    this.currentPlayer = 'white';  // Always switch to white's turn after AI moves
                     this.isAIThinking = false;
-                    gameStatus.textContent = `${this.playerColor.charAt(0).toUpperCase() + this.playerColor.slice(1)}'s Turn (Your Turn)`;
+                    gameStatus.textContent = "White's Turn (Your Turn)";
                     this.draw();
                 }
             }, 500);
         } else {
             // Strategic AI logic
             const depth = 3;
-            let bestMoveSoFar = null;
-
-            const aiTimeout = setTimeout(() => {
-                console.log('AI move timed out, using best move found');
-                if (bestMoveSoFar) {
-                    this.movePiece(bestMoveSoFar.piece, bestMoveSoFar.to.x, bestMoveSoFar.to.y);
-                    this.currentPlayer = this.playerColor;
-                    this.isAIThinking = false;
-                    gameStatus.textContent = `${this.playerColor.charAt(0).toUpperCase() + this.playerColor.slice(1)}'s Turn (Your Turn)`;
-                    this.draw();
-                }
-            }, 3000);
-
-            bestMoveSoFar = this.findBestMove(depth);
-            clearTimeout(aiTimeout);
+            let bestMoveSoFar = this.findBestMove(depth);
             
             setTimeout(() => {
                 if (bestMoveSoFar) {
                     this.movePiece(bestMoveSoFar.piece, bestMoveSoFar.to.x, bestMoveSoFar.to.y);
-                    this.currentPlayer = this.playerColor;
+                    this.currentPlayer = 'white';  // Always switch to white's turn after AI moves
                     this.isAIThinking = false;
-                    gameStatus.textContent = `${this.playerColor.charAt(0).toUpperCase() + this.playerColor.slice(1)}'s Turn (Your Turn)`;
+                    gameStatus.textContent = "White's Turn (Your Turn)";
                     this.draw();
                 }
             }, 500);
@@ -1167,6 +1156,7 @@ class ChessGame {
                     ctx.font = `${SQUARE_SIZE * 0.8}px Arial`;
                     ctx.textAlign = 'center';
                     ctx.textBaseline = 'middle';
+
                     ctx.fillText(
                         PIECE_SYMBOLS[`${piece.color}-${piece.type}`],
                         x * SQUARE_SIZE + SQUARE_SIZE/2,
@@ -1313,7 +1303,8 @@ class ChessGame {
     startNewGame() {
         // Reset all game state
         this.board = this.initializeBoard();
-        this.currentPlayer = 'white';
+        // Start with black's turn if player chose black
+        this.currentPlayer = this.playerColor === 'black' ? 'black' : 'white';
         this.selectedPiece = null;
         this.validMoves = [];
         this.capturedPieces = {
@@ -1330,9 +1321,9 @@ class ChessGame {
         document.getElementById('white-last-move').textContent = 'White: ';
         document.getElementById('black-last-move').textContent = 'Black: ';
 
-        // Set initial game status
+        // If player chose black, AI (black) moves first
         if (this.playerColor === 'black') {
-            gameStatus.textContent = "White's Turn (AI thinking...)";
+            gameStatus.textContent = "Black's Turn (AI thinking...)";
             setTimeout(() => this.makeAIMove(), 500);
         } else {
             gameStatus.textContent = "White's Turn (Your Turn)";
