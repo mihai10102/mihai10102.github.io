@@ -422,6 +422,43 @@ function drawBaseBattleIcon(canvas) {
     ctx.fillRect(90, 70, 15, 3);
 }
 
+// Add poker icon drawing function
+function drawPokerIcon() {
+    const canvas = document.getElementById('pokerCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    // Background
+    ctx.fillStyle = '#2c3e50';
+    ctx.fillRect(0, 0, 150, 150);
+    
+    // Draw four cards in a fan pattern
+    const cards = [
+        { x: 35, y: 45, rotation: -0.2 },
+        { x: 45, y: 40, rotation: -0.1 },
+        { x: 55, y: 35, rotation: 0 },
+        { x: 65, y: 40, rotation: 0.1 }
+    ];
+    
+    cards.forEach(card => {
+        ctx.save();
+        ctx.translate(card.x + 25, card.y + 35);
+        ctx.rotate(card.rotation);
+        
+        // Card background
+        ctx.fillStyle = 'white';
+        ctx.fillRect(-25, -35, 50, 70);
+        ctx.strokeStyle = '#333';
+        ctx.strokeRect(-25, -35, 50, 70);
+        
+        // Card suit
+        ctx.fillStyle = '#e74c3c';
+        ctx.font = '30px Arial';
+        ctx.fillText('♥', -15, 5);
+        
+        ctx.restore();
+    });
+}
+
 // Initial drawings
 drawCube();
 drawFootballField();
@@ -480,4 +517,9 @@ if (valentinesMergeCanvas) {
 const baseBattleCanvas = document.getElementById('baseBattleCanvas');
 if (baseBattleCanvas) {
     drawBaseBattleIcon(baseBattleCanvas);
-} 
+}
+
+const pokerCanvas = document.getElementById('pokerCanvas');
+if (pokerCanvas) {
+    drawPokerIcon(pokerCanvas);
+}
