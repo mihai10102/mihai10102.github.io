@@ -113,6 +113,23 @@
         .selected {
             border: 3px solid #f1c40f;
         }
+        .material-evaluation {
+            margin: 20px 0;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+        #material-balance {
+            font-size: 1.1em;
+            margin-top: 5px;
+            text-align: center;
+        }
+        #position-eval {
+            font-size: 1.1em;
+            margin-top: 5px;
+            text-align: center;
+            color: #ddd;
+        }
     </style>
 </head>
 <body>
@@ -147,6 +164,11 @@
                 <h3>Last Moves:</h3>
                 <div id="white-last-move">White: </div>
                 <div id="black-last-move">Black: </div>
+            </div>
+            <div class="material-evaluation">
+                <h3>Evaluation:</h3>
+                <div id="material-balance">Even (+0)</div>
+                <div id="position-eval">Position: Even (0.0)</div>
             </div>
             <div>
                 <h3>Captured White Pieces:</h3>

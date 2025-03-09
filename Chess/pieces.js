@@ -23,7 +23,7 @@ class Piece {
         this.hasMoved = false;
     }
 
-    getValidMoves(board, ignoreCheck = false) {
+    getValidMoves(board, isCheckingForCheck = false) {
         let moves = [];
         switch(this.type) {
             case 'pawn':
@@ -42,72 +42,38 @@ class Piece {
                 moves = this.getQueenMoves(board);
                 break;
             case 'king':
-                moves = this.getKingMoves(board);
+                moves = this.getKingMoves(board, isCheckingForCheck);
                 break;
         }
 
-        // Filter out moves that would put or leave own king in check
-        if (!ignoreCheck) {
-            moves = moves.filter(([moveX, moveY]) => {
-                const game = window.game;
-                const originalX = this.x;
-                const originalY = this.y;
-                const capturedPiece = board[moveY][moveX];
-                
-                // Make temporary move
-                board[this.y][this.x] = null;
-                board[moveY][moveX] = this;
-                this.x = moveX;
-                this.y = moveY;
+        // If we're just checking for check, return basic moves
+        if (isCheckingForCheck) return moves;
 
-                const inCheck = game.isKingInCheck(this.color);
-
-                // Undo move
-                board[moveY][moveX] = capturedPiece;
-                board[originalY][originalX] = this;
-                this.x = originalX;
-                this.y = originalY;
-
-                return !inCheck;
-            });
-        }
-
-        // Add castling moves
-        if (this.type === 'king' && !this.hasMoved && !ignoreCheck) {
-            const game = window.game;
-            // Kingside castling
-            const kingsideRook = board[this.y][7];
-            if (kingsideRook && 
-                kingsideRook.type === 'rook' && 
-                !kingsideRook.hasMoved &&
-                !board[this.y][5] && 
-                !board[this.y][6]) {
-                // Check if king is not in check and path is not under attack
-                if (!game.isPieceUnderAttack(this, this.x, this.y) &&
-                    !game.isPieceUnderAttack(this, 5, this.y) &&
-                    !game.isPieceUnderAttack(this, 6, this.y)) {
-                    moves.push([6, this.y]);
-                }
-            }
-
-            // Queenside castling
-            const queensideRook = board[this.y][0];
-            if (queensideRook && 
-                queensideRook.type === 'rook' && 
-                !queensideRook.hasMoved &&
-                !board[this.y][1] && 
-                !board[this.y][2] && 
-                !board[this.y][3]) {
-                // Check if king is not in check and path is not under attack
-                if (!game.isPieceUnderAttack(this, this.x, this.y) &&
-                    !game.isPieceUnderAttack(this, 3, this.y) &&
-                    !game.isPieceUnderAttack(this, 2, this.y)) {
-                    moves.push([2, this.y]);
-                }
-            }
-        }
-
-        return moves;
+        // Filter out moves that would put own king in check
+        return moves.filter(([x, y]) => {
+            const originalX = this.x;
+            const originalY = this.y;
+            const originalPiece = board[y][x];
+            
+            // Make move temporarily
+            board[this.y][this.x] = null;
+            board[y][x] = this;
+            this.x = x;
+            this.y = y;
+            
+            // When checking king moves, we need to avoid recursion
+            const wouldBeInCheck = this.type === 'king' ? 
+                this.isSquareAttacked(x, y, board) : 
+                game.isKingInCheck(this.color);
+            
+            // Undo move
+            board[originalY][originalX] = this;
+            board[y][x] = originalPiece;
+            this.x = originalX;
+            this.y = originalY;
+            
+            return !wouldBeInCheck;
+        });
     }
 
     getPawnMoves(board) {
@@ -223,24 +189,66 @@ class Piece {
         return [...this.getRookMoves(board), ...this.getBishopMoves(board)];
     }
 
-    getKingMoves(board) {
+    getKingMoves(board, isCheckingForCheck = false) {
         const moves = [];
-        const offsets = [
-            [-1, -1], [-1, 0], [-1, 1],
-            [0, -1], [0, 1],
-            [1, -1], [1, 0], [1, 1]
+        const directions = [
+            [-1,-1], [0,-1], [1,-1],
+            [-1, 0],         [1, 0],
+            [-1, 1], [0, 1], [1, 1]
         ];
 
-        for (let [dx, dy] of offsets) {
-            const x = this.x + dx;
-            const y = this.y + dy;
-            if (x >= 0 && x < 8 && y >= 0 && y < 8) {
-                if (!board[y][x] || board[y][x].color !== this.color) {
-                    moves.push([x, y]);
+        // Normal king moves
+        for (const [dx, dy] of directions) {
+            const newX = this.x + dx;
+            const newY = this.y + dy;
+            if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8) {
+                const targetPiece = board[newY][newX];
+                if (!targetPiece || targetPiece.color !== this.color) {
+                    moves.push([newX, newY]);
+                }
+            }
+        }
+
+        // Only check castling if not in a recursive call and not checking for attacks
+        if (!isCheckingForCheck && !this.hasMoved) {
+            const y = this.y;
+            // Kingside castling
+            if (board[y][7]?.type === 'rook' && !board[y][7].hasMoved &&
+                !board[y][5] && !board[y][6]) {
+                // Check if passing through check
+                if (!this.isSquareAttacked(5, y, board) && 
+                    !this.isSquareAttacked(6, y, board)) {
+                    moves.push([6, y]);
+                }
+            }
+            // Queenside castling
+            if (board[y][0]?.type === 'rook' && !board[y][0].hasMoved &&
+                !board[y][1] && !board[y][2] && !board[y][3]) {
+                // Check if passing through check
+                if (!this.isSquareAttacked(2, y, board) && 
+                    !this.isSquareAttacked(3, y, board)) {
+                    moves.push([2, y]);
                 }
             }
         }
 
         return moves;
+    }
+
+    isSquareAttacked(x, y, board) {
+        // Check if a square is under attack by opponent pieces
+        const opponentColor = this.color === 'white' ? 'black' : 'white';
+        for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++) {
+                const piece = board[i][j];
+                if (piece && piece.color === opponentColor) {
+                    const moves = piece.getValidMoves(board, true); // Pass true to avoid recursion
+                    if (moves.some(([mx, my]) => mx === x && my === y)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 } 
