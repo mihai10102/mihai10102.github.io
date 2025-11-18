@@ -9,7 +9,36 @@
   </head>
   <body>
     <h1>Welcome to My Projects</h1>
-    <div class="project-grid">
+    
+    <!-- Category Selection -->
+    <div id="category-selection" class="category-selection">
+      <div class="category-card" data-category="app">
+        <div class="category-icon">📱</div>
+        <h2>App</h2>
+        <p>Calisthenics Tracker</p>
+      </div>
+      <div class="category-card" data-category="games">
+        <div class="category-icon">🎮</div>
+        <h2>Games</h2>
+        <p>Play fun games</p>
+      </div>
+    </div>
+    
+    <!-- App Content (Calisthenics Tracker) -->
+    <div id="app-content" class="content-section hidden">
+      <button class="back-button" onclick="showCategories()">← Back</button>
+      <div class="project-grid single-item">
+        <div class="project-card">
+          <div class="project-icon" style="font-size: 100px; text-align: center; line-height: 150px;">💪</div>
+          <a href="./CalistenicsTracker/index.html">Calisthenics Tracker</a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Games Content -->
+    <div id="games-content" class="content-section hidden">
+      <button class="back-button" onclick="showCategories()">← Back</button>
+      <div class="project-grid">
       <div class="project-card">
         <canvas class="project-icon" id="cubeCanvas" width="150" height="150"></canvas>
         <a href="./Cube/index.html">Rubik's Cube Solver</a>
@@ -71,6 +100,46 @@
         <a href="./Poker/index.html">Poker Game</a>
       </div>
     </div>
+    
+    <script>
+      // Handle category selection
+      document.addEventListener('DOMContentLoaded', function() {
+        const categoryCards = document.querySelectorAll('.category-card');
+        categoryCards.forEach(card => {
+          card.addEventListener('click', function() {
+            const category = this.dataset.category;
+            showContent(category);
+          });
+        });
+      });
+      
+      function showContent(category) {
+        // Hide category selection
+        document.getElementById('category-selection').classList.add('hidden');
+        
+        // Hide all content sections
+        document.querySelectorAll('.content-section').forEach(section => {
+          section.classList.add('hidden');
+        });
+        
+        // Show selected content
+        if (category === 'app') {
+          document.getElementById('app-content').classList.remove('hidden');
+        } else if (category === 'games') {
+          document.getElementById('games-content').classList.remove('hidden');
+        }
+      }
+      
+      function showCategories() {
+        // Show category selection
+        document.getElementById('category-selection').classList.remove('hidden');
+        
+        // Hide all content sections
+        document.querySelectorAll('.content-section').forEach(section => {
+          section.classList.add('hidden');
+        });
+      }
+    </script>
     <script src="icons.js"></script>
   </body>
 </html>
