@@ -176,17 +176,18 @@ const Storage = {
         };
         
         const dataStr = JSON.stringify(exportData, null, 2);
-        const dataBlob = new Blob([dataStr], { type: 'application/json' });
-        const url = URL.createObjectURL(dataBlob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `calisthenics-logs-${new Date().toISOString().split('T')[0]}.json`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
         
-        return exportData;
+        // Copy to clipboard
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(dataStr).then(() => {
+                return dataStr; // Return for display
+            }).catch(err => {
+                console.error('Failed to copy to clipboard:', err);
+                return dataStr; // Still return for manual copy
+            });
+        }
+        
+        return dataStr;
     },
 
     importLogs: function(jsonString, options = { merge: false, overwriteExercises: false, overwriteSkills: false }) {

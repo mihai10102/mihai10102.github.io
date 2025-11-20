@@ -1108,11 +1108,15 @@ const App = {
     setupExportImport: function() {
         const exportBtn = document.getElementById('export-logs-btn');
         const importBtn = document.getElementById('import-logs-btn');
-        const importFileInput = document.getElementById('import-file-input');
+        const exportModal = document.getElementById('export-modal');
         const importModal = document.getElementById('import-modal');
+        const closeExportModal = document.getElementById('close-export-modal');
+        const closeExportBtn = document.getElementById('close-export-btn');
         const closeImportModal = document.getElementById('close-import-modal');
         const cancelImport = document.getElementById('cancel-import');
         const confirmImportBtn = document.getElementById('confirm-import-btn');
+        const copyExportBtn = document.getElementById('copy-export-btn');
+        const importJsonText = document.getElementById('import-json-text');
         const importModeRadios = document.querySelectorAll('input[name="import-mode"]');
 
         // Export button
@@ -1123,35 +1127,130 @@ const App = {
                     alert('No logs to export!');
                     return;
                 }
-                Storage.exportLogs();
+                
+                const jsonString = Storage.exportLogs();
+                
+                // Show modal with JSON text
+                const exportTextArea = document.getElementById('export-json-text');
+                const copyStatus = document.getElementById('export-copy-status');
+                
+                if (exportTextArea) {
+                    exportTextArea.value = jsonString;
+                }
+                
+                // Try to copy to clipboard
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(jsonString).then(() => {
+                        if (copyStatus) {
+                            copyStatus.textContent = 'Copied to clipboard! ✅';
+                            copyStatus.style.color = '#4CAF50';
+                        }
+                    }).catch(err => {
+                        console.error('Failed to copy:', err);
+                        if (copyStatus) {
+                            copyStatus.textContent = 'Failed to copy automatically. Please copy manually.';
+                            copyStatus.style.color = '#f44336';
+                        }
+                    });
+                } else {
+                    if (copyStatus) {
+                        copyStatus.textContent = 'Clipboard API not available. Please copy manually.';
+                        copyStatus.style.color = '#ff9800';
+                    }
+                }
+                
+                if (exportModal) {
+                    exportModal.style.display = 'block';
+                }
+            });
+        }
+
+        // Copy export button
+        if (copyExportBtn) {
+            copyExportBtn.addEventListener('click', () => {
+                const exportTextArea = document.getElementById('export-json-text');
+                const copyStatus = document.getElementById('export-copy-status');
+                
+                if (exportTextArea) {
+                    exportTextArea.select();
+                    exportTextArea.setSelectionRange(0, 99999); // For mobile
+                    
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(exportTextArea.value).then(() => {
+                            if (copyStatus) {
+                                copyStatus.textContent = 'Copied to clipboard! ✅';
+                                copyStatus.style.color = '#4CAF50';
+                            }
+                        }).catch(err => {
+                            console.error('Failed to copy:', err);
+                            if (copyStatus) {
+                                copyStatus.textContent = 'Failed to copy. Please copy manually.';
+                                copyStatus.style.color = '#f44336';
+                            }
+                        });
+                    } else {
+                        // Fallback for older browsers
+                        try {
+                            document.execCommand('copy');
+                            if (copyStatus) {
+                                copyStatus.textContent = 'Copied to clipboard! ✅';
+                                copyStatus.style.color = '#4CAF50';
+                            }
+                        } catch (err) {
+                            if (copyStatus) {
+                                copyStatus.textContent = 'Please select and copy manually.';
+                                copyStatus.style.color = '#ff9800';
+                            }
+                        }
+                    }
+                }
             });
         }
 
         // Import button
         if (importBtn) {
             importBtn.addEventListener('click', () => {
-                importFileInput.click();
+                if (importModal) {
+                    importModal.style.display = 'block';
+                    if (importJsonText) {
+                        importJsonText.value = '';
+                        importJsonText.focus();
+                    }
+                }
             });
         }
 
-        // File input change
-        if (importFileInput) {
-            importFileInput.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    const jsonString = event.target.result;
-                    try {
-                        const importData = JSON.parse(jsonString);
-                        this.showImportPreview(importData);
-                        this.importData = jsonString;
-                    } catch (error) {
-                        alert('Error reading file: ' + error.message);
+        // Validate JSON as user types
+        if (importJsonText) {
+            importJsonText.addEventListener('input', () => {
+                const jsonString = importJsonText.value.trim();
+                const previewDiv = document.getElementById('import-preview');
+                const previewText = document.getElementById('import-preview-text');
+                const confirmBtn = document.getElementById('confirm-import-btn');
+                const resultDiv = document.getElementById('import-result');
+                
+                if (resultDiv) resultDiv.style.display = 'none';
+                
+                if (jsonString.length === 0) {
+                    if (previewDiv) previewDiv.style.display = 'none';
+                    if (confirmBtn) confirmBtn.style.display = 'none';
+                    return;
+                }
+                
+                try {
+                    const importData = JSON.parse(jsonString);
+                    this.showImportPreview(importData);
+                    if (confirmBtn) confirmBtn.style.display = 'block';
+                } catch (error) {
+                    if (previewDiv) {
+                        previewDiv.style.display = 'block';
+                        previewDiv.style.background = '#ffebee';
                     }
-                };
-                reader.readAsText(file);
+                    if (previewText) {
+                        previewText.innerHTML = `<span style="color: #f44336;">Invalid JSON: ${error.message}</span>`;
+                    }
+                    if (confirmBtn) confirmBtn.style.display = 'none';
+                }
             });
         }
 
@@ -1169,28 +1268,42 @@ const App = {
             });
         });
 
-        // Close modal
+        // Close export modal
+        if (closeExportModal) {
+            closeExportModal.addEventListener('click', () => {
+                if (exportModal) exportModal.style.display = 'none';
+            });
+        }
+
+        if (closeExportBtn) {
+            closeExportBtn.addEventListener('click', () => {
+                if (exportModal) exportModal.style.display = 'none';
+            });
+        }
+
+        // Close import modal
         if (closeImportModal) {
             closeImportModal.addEventListener('click', () => {
-                importModal.style.display = 'none';
-                this.importData = null;
-                if (importFileInput) importFileInput.value = '';
+                if (importModal) importModal.style.display = 'none';
+                if (importJsonText) importJsonText.value = '';
             });
         }
 
         if (cancelImport) {
             cancelImport.addEventListener('click', () => {
-                importModal.style.display = 'none';
-                this.importData = null;
-                if (importFileInput) importFileInput.value = '';
+                if (importModal) importModal.style.display = 'none';
+                if (importJsonText) importJsonText.value = '';
             });
         }
 
         // Confirm import
         if (confirmImportBtn) {
             confirmImportBtn.addEventListener('click', () => {
-                if (!this.importData) {
-                    alert('Please select a file first!');
+                if (!importJsonText) return;
+                
+                const jsonString = importJsonText.value.trim();
+                if (!jsonString) {
+                    alert('Please paste JSON data first!');
                     return;
                 }
 
@@ -1210,7 +1323,7 @@ const App = {
                     overwriteSkills: mergeSkills
                 };
 
-                const result = Storage.importLogs(this.importData, options);
+                const result = Storage.importLogs(jsonString, options);
 
                 if (result.success) {
                     alert(result.message);
@@ -1222,27 +1335,31 @@ const App = {
                             this.renderSkillTree();
                         }
                     }
-                    importModal.style.display = 'none';
-                    this.importData = null;
-                    if (importFileInput) importFileInput.value = '';
+                    if (importModal) importModal.style.display = 'none';
+                    if (importJsonText) importJsonText.value = '';
                 } else {
-                    alert('Import failed: ' + result.error);
+                    const resultDiv = document.getElementById('import-result');
+                    if (resultDiv) {
+                        resultDiv.style.display = 'block';
+                        resultDiv.innerHTML = `<p style="color: #f44336; font-weight: bold;">Import failed: ${result.error}</p>`;
+                    } else {
+                        alert('Import failed: ' + result.error);
+                    }
                 }
             });
         }
     },
 
     showImportPreview: function(importData) {
-        const modal = document.getElementById('import-modal');
         const previewDiv = document.getElementById('import-preview');
         const previewText = document.getElementById('import-preview-text');
         const confirmBtn = document.getElementById('confirm-import-btn');
         const resultDiv = document.getElementById('import-result');
 
-        if (!modal) return;
-
-        modal.style.display = 'block';
-        if (previewDiv) previewDiv.style.display = 'block';
+        if (previewDiv) {
+            previewDiv.style.display = 'block';
+            previewDiv.style.background = '#e8f5e9';
+        }
         if (confirmBtn) confirmBtn.style.display = 'block';
         if (resultDiv) resultDiv.style.display = 'none';
 
