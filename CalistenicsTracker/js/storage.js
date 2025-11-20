@@ -157,6 +157,113 @@ const Storage = {
 
     saveSettings: function(settings) {
         localStorage.setItem('settings', JSON.stringify(settings));
+    },
+
+    // Export/Import functions
+    exportLogs: function() {
+        const logs = this.getLogs();
+        const exercises = this.getExercises();
+        const skills = this.getSkills();
+        const settings = this.getSettings();
+        
+        const exportData = {
+            version: '1.0',
+            exportDate: new Date().toISOString(),
+            logs: logs,
+            exercises: exercises,
+            skills: skills,
+            settings: settings
+        };
+        
+        const dataStr = JSON.stringify(exportData, null, 2);
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(dataBlob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `calisthenics-logs-${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        
+        return exportData;
+    },
+
+    importLogs: function(jsonString, options = { merge: false, overwriteExercises: false, overwriteSkills: false }) {
+        try {
+            const importData = JSON.parse(jsonString);
+            
+            // Validate import data
+            if (!importData.logs || !Array.isArray(importData.logs)) {
+                throw new Error('Invalid import file format: logs array not found');
+            }
+            
+            if (options.merge) {
+                // Merge with existing data
+                const existingLogs = this.getLogs();
+                const existingExercises = this.getExercises();
+                const existingSkills = this.getSkills();
+                
+                // Merge logs (avoid duplicates based on id)
+                const existingIds = new Set(existingLogs.map(log => log.id));
+                const newLogs = importData.logs.filter(log => !existingIds.has(log.id));
+                const mergedLogs = [...existingLogs, ...newLogs];
+                localStorage.setItem('logs', JSON.stringify(mergedLogs));
+                
+                // Merge exercises
+                if (importData.exercises && Array.isArray(importData.exercises)) {
+                    if (options.overwriteExercises) {
+                        const exerciseIds = new Set(existingExercises.map(ex => ex.id));
+                        const newExercises = importData.exercises.filter(ex => !exerciseIds.has(ex.id));
+                        const mergedExercises = [...existingExercises, ...newExercises];
+                        localStorage.setItem('exercises', JSON.stringify(mergedExercises));
+                    }
+                }
+                
+                // Merge skills
+                if (importData.skills && Array.isArray(importData.skills)) {
+                    if (options.overwriteSkills) {
+                        const skillIds = new Set(existingSkills.map(skill => skill.id));
+                        const newSkills = importData.skills.filter(skill => !skillIds.has(skill.id));
+                        const mergedSkills = [...existingSkills, ...newSkills];
+                        localStorage.setItem('skills', JSON.stringify(mergedSkills));
+                    }
+                }
+                
+                return {
+                    success: true,
+                    imported: newLogs.length,
+                    message: `Successfully merged ${newLogs.length} new logs`
+                };
+            } else {
+                // Replace all data
+                localStorage.setItem('logs', JSON.stringify(importData.logs));
+                
+                if (importData.exercises && Array.isArray(importData.exercises)) {
+                    localStorage.setItem('exercises', JSON.stringify(importData.exercises));
+                }
+                
+                if (importData.skills && Array.isArray(importData.skills)) {
+                    localStorage.setItem('skills', JSON.stringify(importData.skills));
+                }
+                
+                if (importData.settings) {
+                    localStorage.setItem('settings', JSON.stringify(importData.settings));
+                }
+                
+                return {
+                    success: true,
+                    imported: importData.logs.length,
+                    message: `Successfully imported ${importData.logs.length} logs`
+                };
+            }
+        } catch (error) {
+            return {
+                success: false,
+                error: error.message,
+                message: `Import failed: ${error.message}`
+            };
+        }
     }
 };
 

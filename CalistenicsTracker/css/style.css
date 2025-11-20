@@ -169,6 +169,22 @@ button:hover {
     background-color: #616161;
 }
 
+.btn-export {
+    background-color: #4CAF50 !important;
+}
+
+.btn-export:hover {
+    background-color: #45a049 !important;
+}
+
+.btn-import {
+    background-color: #2196F3 !important;
+}
+
+.btn-import:hover {
+    background-color: #1976D2 !important;
+}
+
 /* Log Styles */
 .log-date-group {
     margin-bottom: 2rem;

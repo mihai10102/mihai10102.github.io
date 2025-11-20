@@ -56,8 +56,53 @@
                 <button type="submit">Log Workout</button>
             </form>
             <div id="workout-logs">
-                <h2>Recent Logs</h2>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+                    <h2 style="margin: 0;">Recent Logs</h2>
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <button id="export-logs-btn" class="btn-export" style="padding: 0.75rem 1.5rem; font-size: 1rem; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; transition: background-color 0.3s;">📥 Export Logs</button>
+                        <button id="import-logs-btn" class="btn-import" style="padding: 0.75rem 1.5rem; font-size: 1rem; background-color: #2196F3; color: white; border: none; border-radius: 4px; cursor: pointer; transition: background-color 0.3s;">📤 Import Logs</button>
+                    </div>
+                </div>
+                <input type="file" id="import-file-input" accept=".json" style="display: none;">
                 <div id="logs-list"></div>
+            </div>
+            
+            <!-- Import Modal -->
+            <div id="import-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close" id="close-import-modal">&times;</span>
+                    <h2>Import Training Logs</h2>
+                    <div id="import-options" style="margin: 1rem 0;">
+                        <div class="form-group">
+                            <label>
+                                <input type="radio" name="import-mode" value="replace" checked>
+                                Replace all data
+                            </label>
+                            <label>
+                                <input type="radio" name="import-mode" value="merge">
+                                Merge with existing data
+                            </label>
+                        </div>
+                        <div id="merge-options" style="display: none; margin-top: 1rem; padding: 1rem; background: #f5f5f5; border-radius: 4px;">
+                            <label>
+                                <input type="checkbox" id="merge-exercises">
+                                Import exercises (if not already existing)
+                            </label>
+                            <br>
+                            <label>
+                                <input type="checkbox" id="merge-skills">
+                                Import skills (if not already existing)
+                            </label>
+                        </div>
+                        <div id="import-preview" style="margin-top: 1rem; padding: 1rem; background: #e8f5e9; border-radius: 4px; display: none;">
+                            <p><strong>File preview:</strong></p>
+                            <p id="import-preview-text"></p>
+                        </div>
+                        <div id="import-result" style="margin-top: 1rem; display: none;"></div>
+                    </div>
+                    <button id="confirm-import-btn" class="btn-primary" style="display: none;">Confirm Import</button>
+                    <button type="button" class="btn-secondary" id="cancel-import">Cancel</button>
+                </div>
             </div>
         </div>
 

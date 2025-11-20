@@ -9,6 +9,7 @@ const App = {
         this.setupExerciseManagement();
         this.setupSkills();
         this.setupProgress();
+        this.setupExportImport();
         this.loadLogs();
         this.populateExerciseSelects();
         this.setTodayDate();
@@ -1101,6 +1102,168 @@ const App = {
             const today = new Date().toISOString().split('T')[0];
             dateInput.value = today;
         }
+    },
+
+    // Export/Import functionality
+    setupExportImport: function() {
+        const exportBtn = document.getElementById('export-logs-btn');
+        const importBtn = document.getElementById('import-logs-btn');
+        const importFileInput = document.getElementById('import-file-input');
+        const importModal = document.getElementById('import-modal');
+        const closeImportModal = document.getElementById('close-import-modal');
+        const cancelImport = document.getElementById('cancel-import');
+        const confirmImportBtn = document.getElementById('confirm-import-btn');
+        const importModeRadios = document.querySelectorAll('input[name="import-mode"]');
+
+        // Export button
+        if (exportBtn) {
+            exportBtn.addEventListener('click', () => {
+                const logs = Storage.getLogs();
+                if (logs.length === 0) {
+                    alert('No logs to export!');
+                    return;
+                }
+                Storage.exportLogs();
+            });
+        }
+
+        // Import button
+        if (importBtn) {
+            importBtn.addEventListener('click', () => {
+                importFileInput.click();
+            });
+        }
+
+        // File input change
+        if (importFileInput) {
+            importFileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const jsonString = event.target.result;
+                    try {
+                        const importData = JSON.parse(jsonString);
+                        this.showImportPreview(importData);
+                        this.importData = jsonString;
+                    } catch (error) {
+                        alert('Error reading file: ' + error.message);
+                    }
+                };
+                reader.readAsText(file);
+            });
+        }
+
+        // Import mode radio buttons
+        importModeRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                const mergeOptions = document.getElementById('merge-options');
+                if (mergeOptions) {
+                    if (e.target.value === 'merge') {
+                        mergeOptions.style.display = 'block';
+                    } else {
+                        mergeOptions.style.display = 'none';
+                    }
+                }
+            });
+        });
+
+        // Close modal
+        if (closeImportModal) {
+            closeImportModal.addEventListener('click', () => {
+                importModal.style.display = 'none';
+                this.importData = null;
+                if (importFileInput) importFileInput.value = '';
+            });
+        }
+
+        if (cancelImport) {
+            cancelImport.addEventListener('click', () => {
+                importModal.style.display = 'none';
+                this.importData = null;
+                if (importFileInput) importFileInput.value = '';
+            });
+        }
+
+        // Confirm import
+        if (confirmImportBtn) {
+            confirmImportBtn.addEventListener('click', () => {
+                if (!this.importData) {
+                    alert('Please select a file first!');
+                    return;
+                }
+
+                const importModeRadio = document.querySelector('input[name="import-mode"]:checked');
+                if (!importModeRadio) {
+                    alert('Please select an import mode!');
+                    return;
+                }
+
+                const importMode = importModeRadio.value;
+                const mergeExercises = document.getElementById('merge-exercises')?.checked || false;
+                const mergeSkills = document.getElementById('merge-skills')?.checked || false;
+
+                const options = {
+                    merge: importMode === 'merge',
+                    overwriteExercises: mergeExercises,
+                    overwriteSkills: mergeSkills
+                };
+
+                const result = Storage.importLogs(this.importData, options);
+
+                if (result.success) {
+                    alert(result.message);
+                    this.loadLogs();
+                    this.populateExerciseSelects();
+                    // Reload skills if they were imported
+                    if (options.overwriteSkills || !options.merge) {
+                        if (typeof this.renderSkillTree === 'function') {
+                            this.renderSkillTree();
+                        }
+                    }
+                    importModal.style.display = 'none';
+                    this.importData = null;
+                    if (importFileInput) importFileInput.value = '';
+                } else {
+                    alert('Import failed: ' + result.error);
+                }
+            });
+        }
+    },
+
+    showImportPreview: function(importData) {
+        const modal = document.getElementById('import-modal');
+        const previewDiv = document.getElementById('import-preview');
+        const previewText = document.getElementById('import-preview-text');
+        const confirmBtn = document.getElementById('confirm-import-btn');
+        const resultDiv = document.getElementById('import-result');
+
+        if (!modal) return;
+
+        modal.style.display = 'block';
+        if (previewDiv) previewDiv.style.display = 'block';
+        if (confirmBtn) confirmBtn.style.display = 'block';
+        if (resultDiv) resultDiv.style.display = 'none';
+
+        let previewHTML = '';
+        if (importData.logs) {
+            previewHTML += `<strong>Logs:</strong> ${importData.logs.length} entries<br>`;
+        }
+        if (importData.exercises) {
+            previewHTML += `<strong>Exercises:</strong> ${importData.exercises.length} entries<br>`;
+        }
+        if (importData.skills) {
+            previewHTML += `<strong>Skills:</strong> ${importData.skills.length} entries<br>`;
+        }
+        if (importData.exportDate) {
+            previewHTML += `<strong>Export Date:</strong> ${new Date(importData.exportDate).toLocaleString()}<br>`;
+        }
+        if (importData.version) {
+            previewHTML += `<strong>Version:</strong> ${importData.version}`;
+        }
+
+        if (previewText) previewText.innerHTML = previewHTML;
     }
 };
 
